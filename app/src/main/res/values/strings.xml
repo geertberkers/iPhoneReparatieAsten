@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">iPhone Reparatie Asten</string>
+    <string name="action_about">Over ons</string>
+    <string name="devicetype">DeviceType</string>
+    <string name="model">Model</string>
+    <string name="brand">Brand</string>
+</resources>
