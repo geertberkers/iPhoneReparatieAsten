@@ -1,4 +1,4 @@
-package geert.berkers.iphonereparatieasten.clicklistener;
+package geert.berkers.iphonereparatieasten.listeners;
 
 /**
  * Created by Geert.

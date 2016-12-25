@@ -4,4 +4,8 @@
     <string name="devicetype">DeviceType</string>
     <string name="model">Model</string>
     <string name="brand">Brand</string>
+    <string name="checkup">CheckUp</string>
+    <string name="mail">Mail</string>
+    <string name="test">Test</string>
+    <string name="question">question?</string>
 </resources>

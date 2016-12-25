@@ -1,4 +1,4 @@
-package geert.berkers.iphonereparatieasten;
+package geert.berkers.iphonereparatieasten.enums;
 
 /**
  * Created by Geert.

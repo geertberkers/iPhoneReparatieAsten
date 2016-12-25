@@ -10,7 +10,7 @@ import java.util.List;
 
 import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.model.Reparatie;
-import geert.berkers.iphonereparatieasten.viewholder.ReparatieViewHolder;
+import geert.berkers.iphonereparatieasten.views.ReparatieViewHolder;
 
 /**
  * Created by Geert.

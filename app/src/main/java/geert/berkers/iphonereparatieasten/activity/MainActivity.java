@@ -23,11 +23,12 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import geert.berkers.iphonereparatieasten.DeviceType;
+import geert.berkers.iphonereparatieasten.Information;
+import geert.berkers.iphonereparatieasten.enums.DeviceType;
 import geert.berkers.iphonereparatieasten.adapter.BrandAdapter;
-import geert.berkers.iphonereparatieasten.clicklistener.ClickListener;
+import geert.berkers.iphonereparatieasten.listeners.ClickListener;
 import geert.berkers.iphonereparatieasten.R;
-import geert.berkers.iphonereparatieasten.clicklistener.RecyclerTouchListener;
+import geert.berkers.iphonereparatieasten.listeners.RecyclerTouchListener;
 import geert.berkers.iphonereparatieasten.model.Brand;
 import geert.berkers.iphonereparatieasten.model.Model;
 import geert.berkers.iphonereparatieasten.model.Reparatie;
@@ -36,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int CALL_PERMISSION = 123;
     private final static int PICK_DEVICE_TYPE = 999;
-
-    private final static String PHONE_NUMBER = "+31646830525";
 
     private List<Brand> brandList;
     private Brand selectedBrand;
@@ -122,9 +121,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
             createAboutUsDialog().show();
+        } else if (id == R.id.action_checkup) {
+            Intent checkUpIntent = new Intent(MainActivity.this, CheckUpActivity.class);
+            startActivity(checkUpIntent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -135,14 +136,18 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
 
             case CALL_PERMISSION:
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    onCall();
-                } else {
-                    createCallAlertDialog().show();
-                }
+                handleCallPermission(grantResults);
                 break;
             default:
                 break;
+        }
+    }
+
+    private void handleCallPermission(@NonNull int[] grantResults) {
+        if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            onCall();
+        } else {
+            createCallAlertDialog().show();
         }
     }
 
@@ -152,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, CALL_PERMISSION);
         } else {
-            startActivity(new Intent(Intent.ACTION_CALL).setData(Uri.parse("tel:" + PHONE_NUMBER)));
+            startActivity(new Intent(Intent.ACTION_CALL).setData(Uri.parse("tel:" + Information.PHONE_NUMBER)));
         }
     }
 
@@ -192,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
         return alertDialogBuilder;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

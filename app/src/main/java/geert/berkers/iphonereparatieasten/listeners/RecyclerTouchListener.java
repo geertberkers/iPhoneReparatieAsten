@@ -1,4 +1,4 @@
-package geert.berkers.iphonereparatieasten.clicklistener;
+package geert.berkers.iphonereparatieasten.listeners;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

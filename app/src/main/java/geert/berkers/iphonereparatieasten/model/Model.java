@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-import geert.berkers.iphonereparatieasten.DeviceType;
+import geert.berkers.iphonereparatieasten.enums.DeviceType;
 
 /**
  * Created by Geert.

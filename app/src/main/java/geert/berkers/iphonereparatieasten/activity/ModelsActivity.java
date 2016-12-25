@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import geert.berkers.iphonereparatieasten.DeviceType;
+import geert.berkers.iphonereparatieasten.enums.DeviceType;
 import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.adapter.ModelAdapter;
-import geert.berkers.iphonereparatieasten.clicklistener.ClickListener;
-import geert.berkers.iphonereparatieasten.clicklistener.RecyclerTouchListener;
+import geert.berkers.iphonereparatieasten.listeners.ClickListener;
+import geert.berkers.iphonereparatieasten.listeners.RecyclerTouchListener;
 import geert.berkers.iphonereparatieasten.model.Model;
 
 /**

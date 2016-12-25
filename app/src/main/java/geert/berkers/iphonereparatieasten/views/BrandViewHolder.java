@@ -1,4 +1,4 @@
-package geert.berkers.iphonereparatieasten.viewholder;
+package geert.berkers.iphonereparatieasten.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
