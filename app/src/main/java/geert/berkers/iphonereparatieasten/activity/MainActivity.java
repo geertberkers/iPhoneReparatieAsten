@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(int position) {
                         selectedBrand = brandList.get(position);
-                        System.out.println(selectedBrand.getBrand());
 
                         if (selectedBrand.getDeviceTypes().size() > 1) {
                             Intent pickDeviceType = new Intent(MainActivity.this, DeviceTypeListActivity.class);

@@ -21,11 +21,25 @@
         android:text="Test Camera"/>
 
     <Button
+        android:id="@+id/btnTestHeadset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testHeadset"
+        android:text="Test Headset"/>
+
+    <Button
         android:id="@+id/btnTestGPS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="testGPS"
         android:text="Test GPS"/>
+
+    <Button
+        android:id="@+id/btnTestTouchscreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testTouchscreen"
+        android:text="Test Touchscreen"/>
 
     <Button
         android:id="@+id/btnTestWifi"

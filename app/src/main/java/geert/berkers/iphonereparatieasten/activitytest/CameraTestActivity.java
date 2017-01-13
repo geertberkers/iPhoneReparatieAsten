@@ -37,6 +37,8 @@ public class CameraTestActivity extends AppCompatActivity {
     private TextView txtInfo;
     private TextView txtQuestion;
 
+    private boolean paused;
+
     private boolean backCameraTested;
     private boolean frontCameraTested;
 
@@ -46,10 +48,12 @@ public class CameraTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_camera_test);
 
         initControls();
         setTitle("Camera");
+
+        paused = false;
         backCameraTested = false;
         frontCameraTested = false;
 
@@ -57,6 +61,16 @@ public class CameraTestActivity extends AppCompatActivity {
             askCameraPermission();
         } else{
             testCamera(BACK);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(paused) {
+            testCamera(backCameraTested ? FRONT : BACK);
+            paused = false;
         }
     }
 
@@ -120,7 +134,6 @@ public class CameraTestActivity extends AppCompatActivity {
                 try {
                     camera = Camera.open(camIdx);
                 } catch (RuntimeException e) {
-                    System.out.println("Camera Exception");
                     e.printStackTrace();
                 }
             }
@@ -185,6 +198,7 @@ public class CameraTestActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         releaseCamera();
+        paused = true;
     }
 
     private void releaseCamera() {
@@ -195,8 +209,6 @@ public class CameraTestActivity extends AppCompatActivity {
     }
 
     public void isNotWorking() {
-        System.out.println("Camera is not working!");
-
         if(!backCameraTested){
             backCameraTested = true;
             backCameraIsWorking = false;
@@ -209,8 +221,6 @@ public class CameraTestActivity extends AppCompatActivity {
     }
 
     public void isWorking() {
-        System.out.println("Camera is working!");
-
         if(!backCameraTested){
             backCameraTested = true;
             backCameraIsWorking = true;
@@ -218,7 +228,6 @@ public class CameraTestActivity extends AppCompatActivity {
         } else if(!frontCameraTested){
             frontCameraTested = true;
             frontCameraIsWorking = true;
-
             setResult();
         }
     }

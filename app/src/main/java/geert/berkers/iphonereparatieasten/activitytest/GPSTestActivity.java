@@ -16,8 +16,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.listeners.GPSLocationListener;
@@ -27,7 +37,7 @@ import geert.berkers.iphonereparatieasten.listeners.GPSLocationListener;
  */
 
 @SuppressLint("StaticFieldLeak")
-public class GPSTestActivity extends AppCompatActivity {
+public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int LOCATION = 1;
 
@@ -39,6 +49,7 @@ public class GPSTestActivity extends AppCompatActivity {
 
     private boolean gpsIsWorking;
 
+    private static GoogleMap mMap;
     private LocationManager locationManager;
     private GPSLocationListener locationListener;
 
@@ -46,6 +57,12 @@ public class GPSTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
+        LayoutInflater.from(this).inflate(R.layout.activity_maps, frame, true);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map) ;
+        mapFragment.getMapAsync(this);
 
         initControls();
 
@@ -64,7 +81,7 @@ public class GPSTestActivity extends AppCompatActivity {
         int coarseLocationPermissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
 
         if (fineLocationPermissionCheck != PackageManager.PERMISSION_GRANTED &&
-            coarseLocationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
+                coarseLocationPermissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION);
         } else {
             testGPS();
@@ -85,8 +102,7 @@ public class GPSTestActivity extends AppCompatActivity {
     private void handleLocationPermission(int[] grantResults) {
         if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             testGPS();
-        }
-        else {
+        } else {
             createLocationAlertDialog().show();
         }
     }
@@ -124,12 +140,12 @@ public class GPSTestActivity extends AppCompatActivity {
         });
     }
 
-    public void isWorking() {
+    private void isWorking() {
         gpsIsWorking = true;
         setResult();
     }
 
-    public void isNotWorking() {
+    private void isNotWorking() {
         gpsIsWorking = false;
         setResult();
     }
@@ -149,16 +165,17 @@ public class GPSTestActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public static void setLocation(Location location) {
+    public static void setLocation(final Location location) {
         txtInfo.setText("Locatie ontvangen:");
         txtQuestion.setText("Is dit uw huidige locatie?");
 
-        System.out.println(location.getLatitude());
-        System.out.println(location.getLongitude());
+        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(loc).title("Huidige locatie"));
 
-
-        //TODO: Show map:
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(15).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
+
 
     @SuppressWarnings("MissingPermission")
     @Override
@@ -194,5 +211,10 @@ public class GPSTestActivity extends AppCompatActivity {
         intentMessage.putExtra("noPermission", true);
         setResult(RESULT_OK, intentMessage);
         finish();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
     }
 }

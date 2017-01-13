@@ -19,32 +19,52 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import geert.berkers.iphonereparatieasten.Information;
 import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.activitytest.CameraTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
 import geert.berkers.iphonereparatieasten.enums.TestResult;
 import geert.berkers.iphonereparatieasten.model.TestItem;
 
 /**
  * Created by Geert.
  */
-
 public class CheckUpActivity extends AppCompatActivity {
 
     private final static int CAMERA = 1;
-    private final static int GPS = 2;
-    private final static int WIFI = 3;
+    private final static int HEADSET = 2;
+    private final static int GPS = 3;
+    private final static int TOUCHSCREEN = 4;
+    private final static int LCD = 5;
+    private final static int COMPAS = 6;
+    private final static int CHARGER = 7;
+    private final static int ON_OFF_BUTTON = 8;
+    private final static int HOME_BUTTON = 9;
+    private final static int VOLUME_BUTTONS = 10;
+    private final static int SPEAKER = 11;
+    private final static int MICROPHONE = 12;
+    private final static int MULTITOUCH = 13;
+    private final static int GYROSCOOP = 14;
+    private final static int ACCELEROMETER = 15;
+    private final static int WIFI = 16;
 
     List<TestItem> testItems;
 
     TestResult backCamera;
     TestResult frontCamera;
+    TestResult headset;
     TestResult gps;
+    TestResult touchscreen;
 
     private Button btnReset;
     private Button btnCamera;
+    private Button btnHeadset;
+    private Button btnTouchscreen;
     private Button btnGPS;
+    private Button btnWifi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +72,23 @@ public class CheckUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_checkup);
 
         initControls();
-        testItems = new ArrayList<>();
+        createTestItemList();
+    }
+
+    private void createTestItemList() {
+        //TODO: Get Device information
+        //TODO: Check if device has:
+        // -  Camera (back/front)
+        // -  Headset
+        // -  GPS
+        // -  TOUCHSCREEN
+        // -  COMPAS
+        // -  MICROPHONE (how much and where)
+        // -  GYROSCOOP = 14;
+        // -  ACCELEROMETER = 15;
+
+///        testItems.add(new TestItem("Camera"));
+
     }
 
     private void initControls() {
@@ -60,6 +96,8 @@ public class CheckUpActivity extends AppCompatActivity {
 
         btnReset = (Button) findViewById(R.id.btnReset);
         btnCamera = (Button) findViewById(R.id.btnTestCamera);
+        btnHeadset = (Button) findViewById(R.id.btnTestHeadset);
+        btnTouchscreen = (Button) findViewById(R.id.btnTestTouchscreen);
         btnGPS = (Button) findViewById(R.id.btnTestGPS);
 
         btnReset.setVisibility(View.INVISIBLE);
@@ -81,6 +119,18 @@ public class CheckUpActivity extends AppCompatActivity {
         }
     }
 
+    public void testHeadset(View view) {
+        if (view.getId() == R.id.btnTestHeadset) {
+            startHeadsetTest();
+        }
+    }
+
+    public void testTouchscreen(View view) {
+        if (view.getId() == R.id.btnTestTouchscreen) {
+            startTouchscreenTest();
+        }
+    }
+
     public void reset(View view) {
         if (view.getId() == R.id.btnReset) {
             createResetAlertDialog().show();
@@ -97,6 +147,16 @@ public class CheckUpActivity extends AppCompatActivity {
     private void startCameraTest() {
         Intent cameraIntent = new Intent(CheckUpActivity.this, CameraTestActivity.class);
         startActivityForResult(cameraIntent, CAMERA);
+    }
+
+    private void startHeadsetTest() {
+        Intent headsetIntent = new Intent(CheckUpActivity.this, HeadsetTestActivity.class);
+        startActivityForResult(headsetIntent, HEADSET);
+    }
+
+    private void startTouchscreenTest() {
+        Intent touchscreenTest = new Intent(CheckUpActivity.this, TouchscreenTestActivity.class);
+        startActivityForResult(touchscreenTest, TOUCHSCREEN);
     }
 
     private void startGPSTest() {
@@ -128,11 +188,21 @@ public class CheckUpActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_mail) {
-            //TODO: Gather results and send mail!
-            System.out.println("Sent mail");
+            Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+            emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            emailIntent.setType("plain/text");
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {Information.EMAIL});
+            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Resultaten Checkup");
+            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, createMessageFromResult());
+            startActivity(Intent.createChooser(emailIntent, "Verstuur mail met..."));
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String createMessageFromResult() {
+        //TODO: Gather results and send mail!
+        return "New message";
     }
 
     @Override
@@ -147,15 +217,11 @@ public class CheckUpActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case CAMERA:
-                    handleCameraResult(data);
-                    break;
-                case GPS:
-                    handleGPSResult(data);
-                    break;
-                case WIFI:
-                    handleWiFiResult(data);
-                    break;
+                case CAMERA:        handleCameraResult(data);       break;
+                case HEADSET:       handleHeadsetResult(data);      break;
+                case GPS:           handleGPSResult(data);          break;
+                case TOUCHSCREEN:   handleTouchscreenResult(data);  break;
+                case WIFI:          handleWiFiResult(data);         break;
                 default:
                     break;
             }
@@ -164,19 +230,12 @@ public class CheckUpActivity extends AppCompatActivity {
         btnReset.setVisibility(View.VISIBLE);
     }
 
-    //TODO: Add versionCode for noPermission results!
-
     private void handleCameraResult(Intent data) {
         if (data != null) {
             // Get result
             boolean noPermission = data.getBooleanExtra("noPermission", false);
             boolean backCameraIsWorking = data.getBooleanExtra("backCameraIsWorking", false);
             boolean frontCameraIsWorking = data.getBooleanExtra("frontCameraIsWorking", false);
-
-            // Log result
-            System.out.println("Camera Permission: " + !noPermission);
-            System.out.println("BackCamera: " + backCameraIsWorking);
-            System.out.println("FrontCamera: " + frontCameraIsWorking);
 
             // Save result
             if(noPermission){
@@ -186,8 +245,19 @@ public class CheckUpActivity extends AppCompatActivity {
                 backCamera = backCameraIsWorking ? TestResult.PASSED : TestResult.FAILED;
                 frontCamera = frontCameraIsWorking ? TestResult.PASSED : TestResult.FAILED;
             }
+
             // Change background
             setButtonColor(btnCamera, (backCameraIsWorking && frontCameraIsWorking));
+        }
+    }
+
+    private void handleHeadsetResult(Intent data) {
+        if (data != null) {
+            boolean headsetIsWorking = data.getBooleanExtra("headsetIsWorking", false);
+
+            headset = headsetIsWorking ? TestResult.PASSED : TestResult.FAILED;
+
+            setButtonColor(btnHeadset, headsetIsWorking);
         }
     }
 
@@ -206,11 +276,19 @@ public class CheckUpActivity extends AppCompatActivity {
         }
     }
 
+    private void handleTouchscreenResult(Intent data) {
+        if (data != null) {
+            boolean touchscreenIsWorking = data.getBooleanExtra("touchscreenIsWorking", false);
+            touchscreen = touchscreenIsWorking ? TestResult.PASSED : TestResult.FAILED;
+            setButtonColor(btnTouchscreen, touchscreenIsWorking);
+        }
+    }
+
     private void handleWiFiResult(Intent data) {
         if (data != null) {
-            boolean gpsIsWorking = data.getBooleanExtra("wifiIsWorking", false);
-            gps = gpsIsWorking ? TestResult.PASSED : TestResult.FAILED;
-            setButtonColor(btnGPS, gpsIsWorking);
+            boolean wifiIsWorking = data.getBooleanExtra("wifiIsWorking", false);
+            gps = wifiIsWorking ? TestResult.PASSED : TestResult.FAILED;
+            setButtonColor(btnWifi, wifiIsWorking);
         }
     }
 

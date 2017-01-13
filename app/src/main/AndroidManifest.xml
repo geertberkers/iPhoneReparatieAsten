@@ -7,13 +7,18 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps"/> <!-- Needed for Android 5.0 (API 21+) -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false"/>
+    <uses-feature android:name="android.hardware.location.gps"/>
 
+    <!-- Needed for Android 5.0 (API 21+) -->
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -57,7 +62,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ModelsActivity"/>
         </activity>
-
         <activity
             android:name=".activity.CheckUpActivity"
             android:launchMode="singleTop"
@@ -78,13 +82,44 @@
         </activity>
 
         <activity
-            android:name=".activitytest.GPSTestActivity"
+            android:name=".activitytest.HeadsetTestActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.CheckUpActivity"/>
         </activity>
+
+        <activity
+            android:name=".activitytest.GPSTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <activity
+            android:name=".activitytest.TouchscreenTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+
+        <receiver android:name=".activitytest.HeadsetTestActivity$HeadsetBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.HEADSET_PLUG"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

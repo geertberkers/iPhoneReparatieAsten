@@ -38,7 +38,7 @@ public class ReparatieAdapter extends RecyclerView.Adapter<ReparatieViewHolder> 
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
         String priceString = "€ " + formatter.format(price);
-        holder.reparatiePrijs.setText("" + priceString);
+        holder.reparatiePrijs.setText(priceString);
     }
 
     @Override
