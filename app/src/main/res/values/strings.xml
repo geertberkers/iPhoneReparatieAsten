@@ -64,6 +64,8 @@
 
     <!-- Other extracted strings -->
     <string name="others">TODO: Remove this one!</string>
+    <string name="info_test_lcd">Klik elke kleur aan om te zoeken naar dode pixels</string>
+    <string name="question_test_lcd">Alle kleuren zijn correct weergegeven</string>
 
 
 </resources>

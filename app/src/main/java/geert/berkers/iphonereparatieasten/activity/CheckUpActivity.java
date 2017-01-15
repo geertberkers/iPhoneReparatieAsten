@@ -26,6 +26,7 @@ import geert.berkers.iphonereparatieasten.activitytest.CompassTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.WiFiTestActivity;
 import geert.berkers.iphonereparatieasten.adapter.TestItemAdapter;
@@ -100,7 +101,7 @@ public class CheckUpActivity extends AppCompatActivity {
                             case HEADSET:           startHeadsetTest();         break;
                             case GPS:               startGPSTest();             break;
                             case TOUCHSCREEN:       startTouchscreenTest();     break;
-//                            case LCD:               startLCDTest();             break;
+                            case LCD:               startLCDTest();             break;
                             case COMPASS:           startCompassTest();         break;
                             case CHARGER:           startChargerTest();         break;
 //                            case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
@@ -356,6 +357,11 @@ public class CheckUpActivity extends AppCompatActivity {
         Intent powerIntent = new Intent(CheckUpActivity.this, CompassTestActivity.class);
         startActivityForResult(powerIntent, COMPASS);
     }
+    private void startLCDTest() {
+        Intent lcdIntent = new Intent(CheckUpActivity.this, LCDTestActivity.class);
+        startActivityForResult(lcdIntent, LCD);
+    }
+
 
     public void startWiFiTest() {
         Intent testIntent = new Intent(CheckUpActivity.this, WiFiTestActivity.class);
@@ -414,13 +420,14 @@ public class CheckUpActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case CAMERA:        handleCameraResult(requestCode, data);       break;
-                case HEADSET:       handleHeadsetResult(requestCode, data);      break;
-                case GPS:           handleGPSResult(requestCode, data);          break;
-                case TOUCHSCREEN:   handleTouchscreenResult(requestCode, data);  break;
-                case WIFI:          handleWiFiResult(requestCode, data);         break;
-                case COMPASS:       handleCompassResult(requestCode, data);      break;
-                case CHARGER:       handleChargerResult(requestCode, data);      break;
+                case CAMERA:        handleCameraResult(requestCode, data);      break;
+                case HEADSET:       handleHeadsetResult(requestCode, data);     break;
+                case GPS:           handleGPSResult(requestCode, data);         break;
+                case TOUCHSCREEN:   handleTouchscreenResult(requestCode, data); break;
+                case LCD:           handleLCDResult(requestCode, data);         break;
+                case WIFI:          handleWiFiResult(requestCode, data);        break;
+                case COMPASS:       handleCompassResult(requestCode, data);     break;
+                case CHARGER:       handleChargerResult(requestCode, data);     break;
                 default:            break;
             }
 
@@ -531,6 +538,18 @@ public class CheckUpActivity extends AppCompatActivity {
                 if (testItem.getRequestCode() == requestCode) {
                     boolean compassIsWorking = data.getBooleanExtra("compassIsWorking", false);
                     testItem.setTestResult(compassIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    private void handleLCDResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean headsetIsWorking = data.getBooleanExtra("lcdIsWorking", false);
+                    testItem.setTestResult(headsetIsWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }
