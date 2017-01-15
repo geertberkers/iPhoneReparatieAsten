@@ -1,20 +1,20 @@
 package geert.berkers.iphonereparatieasten.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,16 @@ import java.util.List;
 import geert.berkers.iphonereparatieasten.Information;
 import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.activitytest.CameraTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.CompassTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
-import geert.berkers.iphonereparatieasten.activitytest.TestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.WiFiTestActivity;
+import geert.berkers.iphonereparatieasten.adapter.TestItemAdapter;
 import geert.berkers.iphonereparatieasten.enums.TestResult;
+import geert.berkers.iphonereparatieasten.listeners.ClickListener;
+import geert.berkers.iphonereparatieasten.listeners.RecyclerTouchListener;
 import geert.berkers.iphonereparatieasten.model.TestItem;
 
 /**
@@ -40,34 +44,22 @@ public class CheckUpActivity extends AppCompatActivity {
     private final static int GPS = 3;
     private final static int TOUCHSCREEN = 4;
     private final static int LCD = 5;
-    private final static int COMPAS = 6;
+    private final static int COMPASS = 6;
     private final static int CHARGER = 7;
     private final static int ON_OFF_BUTTON = 8;
     private final static int HOME_BUTTON = 9;
-    private final static int VOLUME_BUTTONS = 10;
+    private final static int VOLUME_CONTROLS = 10;
     private final static int SPEAKER = 11;
     private final static int MICROPHONE = 12;
     private final static int MULTITOUCH = 13;
-    private final static int GYROSCOOP = 14;
+    private final static int GYROSCOPE = 14;
     private final static int ACCELEROMETER = 15;
     private final static int WIFI = 16;
 
-    List<TestItem> testItems;
-
-    TestResult backCamera;
-    TestResult frontCamera;
-    TestResult headset;
-    TestResult gps;
-    TestResult touchscreen;
-    TestResult charger;
-
     private Button btnReset;
-    private Button btnCamera;
-    private Button btnHeadset;
-    private Button btnTouchscreen;
-    private Button btnGPS;
-    private Button btnCharger;
-    private Button btnWifi;
+    private List<TestItem> testItems;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter testItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,74 +68,236 @@ public class CheckUpActivity extends AppCompatActivity {
 
         initControls();
         createTestItemList();
-    }
+        initRecyclerView();
 
-    private void createTestItemList() {
-        testItems = new ArrayList<>();
-
-        //TODO: Get Device information
-        //TODO: Check if device has:
-        // -  Camera (back/front)
-        // -  Headset
-        // -  GPS
-        // -  TOUCHSCREEN
-        // -  COMPAS
-        // -  MICROPHONE (how much and where)
-        // -  GYROSCOOP = 14;
-        // -  ACCELEROMETER = 15;
-
-        testItems.add(new TestItem("Camera"));
-
+        //TODO: Save results on quit!
+        //TODO: Load results from last time
     }
 
     private void initControls() {
         setTitle("Checkup");
 
         btnReset = (Button) findViewById(R.id.btnReset);
-        btnCamera = (Button) findViewById(R.id.btnTestCamera);
-        btnHeadset = (Button) findViewById(R.id.btnTestHeadset);
-        btnTouchscreen = (Button) findViewById(R.id.btnTestTouchscreen);
-        btnGPS = (Button) findViewById(R.id.btnTestGPS);
-        btnCharger = (Button) findViewById(R.id.btnTestCharger);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        btnReset.setVisibility(View.INVISIBLE);
+        btnReset.setVisibility(View.GONE);
     }
 
-    public void testCamera(View view) {
-        if (view.getId() == R.id.btnTestCamera) {
-            if (checkCameraHardware(this)) {
-                startCameraTest();
-            } else {
-                Toast.makeText(this, "No Camera available", Toast.LENGTH_SHORT).show();
-            }
+    private void initRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(layoutManager);
+        testItemAdapter = new TestItemAdapter(testItems);
+        recyclerView.setAdapter(testItemAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, new ClickListener() {
+                    @Override
+                    public void onClick(int position) {
+                        TestItem selectedItem = testItems.get(position);
+
+                        switch (selectedItem.getRequestCode()){
+                            case CAMERA:            startCameraTest();          break;
+                            case HEADSET:           startHeadsetTest();         break;
+                            case GPS:               startGPSTest();             break;
+                            case TOUCHSCREEN:       startTouchscreenTest();     break;
+//                            case LCD:               startLCDTest();             break;
+                            case COMPASS:           startCompassTest();         break;
+                            case CHARGER:           startChargerTest();         break;
+//                            case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
+//                            case HOME_BUTTON:       startHomeButtonTest();      break;
+//                            case VOLUME_CONTROLS:   startVolumeControlsTest();  break;
+//                            case SPEAKER:           startSpeakerTest();         break;
+//                            case MICROPHONE:        startMicrophoneTest();      break;
+//                            case MULTITOUCH:        startMultiTouchTest();      break;
+//                            case GYROSCOPE:         startGyroscopeTest();       break;
+//                            case ACCELEROMETER:     startAccelerometerTest();   break;
+                            case WIFI:              startWiFiTest();        break;
+                            default: break;
+                        }
+                    }
+                })
+        );
+
+    }
+
+    private void createTestItemList() {
+        testItems = new ArrayList<>();
+
+        addCameraTestItem();
+        addHeadsetTest();
+        addGPSTest();
+        addTouchscreenTest();
+        addLCDTest();
+        addCompassTest();
+        addChargerTest();
+        addPowerButtonTest();
+        addHomeButtonTest();
+        addVolumeButtonsTest();
+        addSpeakerTest();
+        addMicrophoneTest();
+        addMultiTouchTest();
+        addGyroscopeTest();
+        addAccelerometerTest();
+        addWifiTest();
+    }
+
+    private void addCameraTestItem() {
+        if (checkCameraHardware()) {
+            testItems.add(new TestItem(
+                    "Camera", CAMERA,
+                    R.drawable.untested_camera,
+                    R.drawable.failed_camera,
+                    R.drawable.passed_camera)
+            );
         }
     }
 
-    public void testGPS(View view) {
-        if (view.getId() == R.id.btnTestGPS) {
-            startGPSTest();
-        }
+    private void addHeadsetTest() {
+        //TODO: Check if device has 3.5mm jack / headset plug
+        testItems.add(new TestItem(
+                "Headset", HEADSET,
+                R.drawable.untested_headset,
+                R.drawable.failed_headset,
+                R.drawable.passed_headset)
+        );
     }
 
-    public void testHeadset(View view) {
-        if (view.getId() == R.id.btnTestHeadset) {
-            startHeadsetTest();
-        }
+    private void addGPSTest() {
+        //TODO: Check if device has GPS
+        testItems.add(new TestItem(
+                "GPS", GPS,
+                R.drawable.untested_gps,
+                R.drawable.failed_gps,
+                R.drawable.passed_gps)
+        );
     }
 
-    public void testTouchscreen(View view) {
-        if (view.getId() == R.id.btnTestTouchscreen) {
-            startTouchscreenTest();
-        }
+    private void addTouchscreenTest() {
+        testItems.add(new TestItem(
+                "Touchscreen", TOUCHSCREEN,
+                R.drawable.untested_touchscreen,
+                R.drawable.failed_touchscreen,
+                R.drawable.passed_touchscreen)
+        );
     }
 
-    public void testCharger(View view) {
-        if (view.getId() == R.id.btnTestCharger) {
-            startChargerTest();
-        }
+    private void addLCDTest() {
+        testItems.add(new TestItem(
+                "LCD", LCD,
+                R.drawable.untested_lcd,
+                R.drawable.failed_lcd,
+                R.drawable.passed_lcd)
+        );
     }
 
-    public void reset(View view) {
+    private void addCompassTest() {
+        if(checkCompassHardware())
+        testItems.add(new TestItem(
+                "Compas", COMPASS,
+                R.drawable.untested_compass,
+                R.drawable.failed_compas,
+                R.drawable.passed_compas)
+        );
+    }
+
+    private void addChargerTest() {
+        testItems.add(new TestItem(
+                "Oplader", CHARGER,
+                R.drawable.untested_charger,
+                R.drawable.failed_charger,
+                R.drawable.passed_charger)
+        );
+    }
+
+    private void addPowerButtonTest() {
+        testItems.add(new TestItem(
+                "Aan/uit knop", ON_OFF_BUTTON,
+                R.drawable.untested_onoffbutton,
+                R.drawable.failed_onoffbutton,
+                R.drawable.passed_onoffbutton)
+        );
+    }
+
+    private void addHomeButtonTest() {
+        //TODO: Check if device has Home button
+        testItems.add(new TestItem(
+                "Home knop", HOME_BUTTON,
+                R.drawable.untested_homebutton,
+                R.drawable.failed_homebutton,
+                R.drawable.passed_homebutton)
+        );
+    }
+
+    private void addVolumeButtonsTest() {
+        //TODO: Check if device has volume buttons / alert slider
+        testItems.add(new TestItem(
+                "Volume knoppen", VOLUME_CONTROLS,
+                R.drawable.untested_volume,
+                R.drawable.failed_volume,
+                R.drawable.passed_volume)
+        );
+    }
+
+    private void addSpeakerTest() {
+        //TODO: Check if device has multiple speakers
+        testItems.add(new TestItem(
+                "Speaker", SPEAKER,
+                R.drawable.untested_speaker,
+                R.drawable.failed_speaker,
+                R.drawable.passed_speaker)
+        );
+    }
+
+    private void addMicrophoneTest() {
+        //TODO: Check if device has multiple microphones
+        testItems.add(new TestItem(
+                "Microfoon", MICROPHONE,
+                R.drawable.untested_microphone,
+                R.drawable.failed_microphone,
+                R.drawable.passed_microphone)
+        );
+    }
+
+    private void addMultiTouchTest() {
+        testItems.add(new TestItem(
+                "Multitouch", MULTITOUCH,
+                R.drawable.untested_multitouch,
+                R.drawable.failed_multitouch,
+                R.drawable.passed_multitouch)
+        );
+    }
+
+    private void addGyroscopeTest() {
+        //TODO: Check if device has Gyroscope
+        testItems.add(new TestItem(
+                "Gyroscoop", GYROSCOPE,
+                R.drawable.untested_gyroscoop,
+                R.drawable.failed_gyroscoop,
+                R.drawable.passed_gyroscoop)
+        );
+    }
+
+    private void addAccelerometerTest() {
+        //TODO: Check if device has accelerometer
+        testItems.add(new TestItem(
+                "Accelerometer", ACCELEROMETER,
+                R.drawable.untested_accelerometer,
+                R.drawable.failed_accelerometer,
+                R.drawable.passed_accelerometer)
+        );
+    }
+
+    private void addWifiTest() {
+        //TODO: Check if device has wifi
+        testItems.add(new TestItem(
+                "WiFi", WIFI,
+                R.drawable.untested_wifi,
+                R.drawable.failed_wifi,
+                R.drawable.passed_wifi)
+        );
+    }
+
+    public void resetTestResults(View view) {
         if (view.getId() == R.id.btnReset) {
             createResetAlertDialog().show();
         }
@@ -151,9 +305,26 @@ public class CheckUpActivity extends AppCompatActivity {
 
     /**
      * Check if this device has a camera
+     * @return true if it has a camera false if it doesn't
      */
-    private boolean checkCameraHardware(Context context) {
-        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    private boolean checkCameraHardware() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    /**
+     *  Check if this device has a compass
+     * @return true if it has a compass false if it doesn't
+     */
+    private boolean checkCompassHardware() {
+        //TODO: Replace with newer version
+        SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        for (int i = 0; i< deviceSensors.size(); i++) {
+            if (deviceSensors.get(i).getType() == Sensor.TYPE_ORIENTATION) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void startCameraTest() {
@@ -179,6 +350,16 @@ public class CheckUpActivity extends AppCompatActivity {
     private void startChargerTest() {
         Intent powerIntent = new Intent(CheckUpActivity.this, ChargerTestActivity.class);
         startActivityForResult(powerIntent, CHARGER);
+    }
+
+    private void startCompassTest() {
+        Intent powerIntent = new Intent(CheckUpActivity.this, CompassTestActivity.class);
+        startActivityForResult(powerIntent, COMPASS);
+    }
+
+    public void startWiFiTest() {
+        Intent testIntent = new Intent(CheckUpActivity.this, WiFiTestActivity.class);
+        startActivityForResult(testIntent, WIFI);
     }
 
     @Override
@@ -233,89 +414,127 @@ public class CheckUpActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case CAMERA:        handleCameraResult(data);       break;
-                case HEADSET:       handleHeadsetResult(data);      break;
-                case GPS:           handleGPSResult(data);          break;
-                case TOUCHSCREEN:   handleTouchscreenResult(data);  break;
-                case WIFI:          handleWiFiResult(data);         break;
-                case CHARGER:       handleChargerResult(data);      break;
+                case CAMERA:        handleCameraResult(requestCode, data);       break;
+                case HEADSET:       handleHeadsetResult(requestCode, data);      break;
+                case GPS:           handleGPSResult(requestCode, data);          break;
+                case TOUCHSCREEN:   handleTouchscreenResult(requestCode, data);  break;
+                case WIFI:          handleWiFiResult(requestCode, data);         break;
+                case COMPASS:       handleCompassResult(requestCode, data);      break;
+                case CHARGER:       handleChargerResult(requestCode, data);      break;
                 default:            break;
             }
-        }
 
-        btnReset.setVisibility(View.VISIBLE);
+            btnReset.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void handleCameraResult(Intent data) {
+    private void handleCameraResult(int requestCode, Intent data) {
         if (data != null) {
             // Get result
             boolean noPermission = data.getBooleanExtra("noPermission", false);
             boolean backCameraIsWorking = data.getBooleanExtra("backCameraIsWorking", false);
             boolean frontCameraIsWorking = data.getBooleanExtra("frontCameraIsWorking", false);
 
-            // Save result
-            if(noPermission){
-                backCamera = TestResult.NO_PERMISSION;
-                frontCamera = TestResult.NO_PERMISSION;
-            } else {
-                backCamera = backCameraIsWorking ? TestResult.PASSED : TestResult.FAILED;
-                frontCamera = frontCameraIsWorking ? TestResult.PASSED : TestResult.FAILED;
+            for (TestItem testItem : testItems){
+                if(testItem.getRequestCode() == requestCode){
+
+                    //TODO: Check how to save multiple items!
+                    // Save result
+                    if(noPermission){
+                        testItem.setTestResult(TestResult.NO_PERMISSION);
+
+                        //backCamera = TestResult.NO_PERMISSION;
+                        //frontCamera = TestResult.NO_PERMISSION;
+                    } else {
+                        testItem.setTestResult((backCameraIsWorking && frontCameraIsWorking) ? TestResult.PASSED : TestResult.FAILED);
+                        //backCamera = backCameraIsWorking ? TestResult.PASSED : TestResult.FAILED;
+                        //frontCamera = frontCameraIsWorking ? TestResult.PASSED : TestResult.FAILED;
+                    }
+
+                    testItemAdapter.notifyDataSetChanged();
+                }
             }
-
-            // Change background
-            setButtonColor(btnCamera, (backCameraIsWorking && frontCameraIsWorking));
         }
     }
 
-    private void handleHeadsetResult(Intent data) {
+    private void handleHeadsetResult(int requestCode, Intent data) {
         if (data != null) {
-            boolean headsetIsWorking = data.getBooleanExtra("headsetIsWorking", false);
-            headset = headsetIsWorking ? TestResult.PASSED : TestResult.FAILED;
-            setButtonColor(btnHeadset, headsetIsWorking);
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean headsetIsWorking = data.getBooleanExtra("headsetIsWorking", false);
+                    testItem.setTestResult(headsetIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
-    private void handleGPSResult(Intent data) {
+    private void handleGPSResult(int requestCode, Intent data) {
         if (data != null) {
             boolean noPermission = data.getBooleanExtra("noPermission", false);
             boolean gpsIsWorking = data.getBooleanExtra("gpsIsWorking", false);
 
-            if(noPermission) {
-                gps = TestResult.NO_PERMISSION;
-            } else {
-                gps = gpsIsWorking ? TestResult.PASSED : TestResult.FAILED;
+            for (TestItem testItem : testItems){
+                if(testItem.getRequestCode() == requestCode){
+                    if(noPermission){
+                        testItem.setTestResult(TestResult.NO_PERMISSION);
+                    } else {
+                        testItem.setTestResult(gpsIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    }
+
+                    testItemAdapter.notifyDataSetChanged();
+                }
             }
-
-            setButtonColor(btnGPS, gpsIsWorking);
         }
     }
 
-    private void handleTouchscreenResult(Intent data) {
+    private void handleTouchscreenResult(int requestCode, Intent data) {
         if (data != null) {
-            boolean touchscreenIsWorking = data.getBooleanExtra("touchscreenIsWorking", false);
-            touchscreen = touchscreenIsWorking ? TestResult.PASSED : TestResult.FAILED;
-            setButtonColor(btnTouchscreen, touchscreenIsWorking);
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean touchscreenIsWorking = data.getBooleanExtra("touchscreenIsWorking", false);
+                    testItem.setTestResult(touchscreenIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
-    private void handleWiFiResult(Intent data) {
+    private void handleWiFiResult(int requestCode, Intent data) {
         if (data != null) {
-            boolean wifiIsWorking = data.getBooleanExtra("wifiIsWorking", false);
-            gps = wifiIsWorking ? TestResult.PASSED : TestResult.FAILED;
-            setButtonColor(btnWifi, wifiIsWorking);
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean wifiIsWorking = data.getBooleanExtra("wifiIsWorking", false);
+                    testItem.setTestResult(wifiIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
-    private void handleChargerResult(Intent data) {
+    private void handleChargerResult(int requestCode, Intent data) {
         if (data != null) {
-            boolean chargerIsWorking = data.getBooleanExtra("chargerIsWorking", false);
-            charger = chargerIsWorking ? TestResult.PASSED : TestResult.FAILED;
-            setButtonColor(btnCharger, chargerIsWorking);
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean chargerIsWorking = data.getBooleanExtra("chargerIsWorking", false);
+                    testItem.setTestResult(chargerIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
-    private void setButtonColor(Button button, boolean passed) {
-        button.getBackground().setColorFilter(passed? Color.GREEN : Color.RED, PorterDuff.Mode.MULTIPLY);
+
+    private void handleCompassResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean compassIsWorking = data.getBooleanExtra("compassIsWorking", false);
+                    testItem.setTestResult(compassIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     private AlertDialog.Builder createResetAlertDialog() {
@@ -327,20 +546,14 @@ public class CheckUpActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                //TODO: Reset button colors
-                btnCamera.getBackground().clearColorFilter();
-                btnGPS.getBackground().clearColorFilter();
-                btnHeadset.getBackground().clearColorFilter();
-                btnTouchscreen.getBackground().clearColorFilter();
-                btnCharger.getBackground().clearColorFilter();
-
                 // Reset TestResults of all tests
                 for(TestItem testItem : testItems){
                     testItem.resetTestResult();
+                    testItemAdapter.notifyDataSetChanged();
                 }
 
                 // Hide button
-                btnReset.setVisibility(View.INVISIBLE);
+                btnReset.setVisibility(View.GONE);
             }
         });
         alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -351,11 +564,5 @@ public class CheckUpActivity extends AppCompatActivity {
         });
 
         return alertDialogBuilder;
-    }
-
-    public void testWifi(View view) {
-        Intent testIntent = new Intent(CheckUpActivity.this, TestActivity.class);
-        testIntent.putExtra("test", "WiFi");
-        startActivityForResult(testIntent, WIFI);
     }
 }

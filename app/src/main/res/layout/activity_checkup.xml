@@ -1,64 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-<!--
+    android:layout_height="wrap_content">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
-    -->
-
-    <Button
-        android:id="@+id/btnTestCamera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testCamera"
-        android:text="Test Camera"/>
-
-    <Button
-        android:id="@+id/btnTestHeadset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testHeadset"
-        android:text="Test Headset"/>
-
-    <Button
-        android:id="@+id/btnTestGPS"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testGPS"
-        android:text="Test GPS"/>
-
-    <Button
-        android:id="@+id/btnTestTouchscreen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testTouchscreen"
-        android:text="Test Touchscreen"/>
-
-    <Button
-        android:id="@+id/btnTestCharger"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testCharger"
-        android:text="Test Power"/>
-
-    <Button
-        android:id="@+id/btnTestWifi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="testWifi"
-        android:text="Test WiFi"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnReset"/>
 
     <Button
         android:id="@+id/btnReset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="reset"
-        android:text="Reset"/>
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:onClick="resetTestResults"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/reset"/>
+</RelativeLayout>

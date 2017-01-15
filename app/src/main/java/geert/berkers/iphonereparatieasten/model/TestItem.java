@@ -5,30 +5,60 @@ import geert.berkers.iphonereparatieasten.enums.TestResult;
 /**
  * Created by Geert.
  */
-
 public class TestItem {
 
-    private String test;
-    private TestResult result;
+    private String testName;
+    private int requestCode;
+    //TODO: Make this a list
+    private TestResult testResult;
 
-    public TestItem(String test){
-        this.test = test;
-        this.result = TestResult.NOT_TESTED;
+    private int untestedImageResource;
+    private int failedImageResource;
+    private int passedImageResource;
+
+    public TestItem(String testName,
+                    int requestCode,
+                    int untestedImageResource,
+                    int failedImageResource,
+                    int passedImageResource) {
+        this.testName = testName;
+        this.requestCode = requestCode;
+        this.untestedImageResource = untestedImageResource;
+        this.failedImageResource = failedImageResource;
+        this.passedImageResource = passedImageResource;
+        this.testResult = TestResult.NOT_TESTED;
     }
 
-    public void setPassedTestResult() {
-        this.result = TestResult.PASSED;
+
+    public String getTestName() {
+        return testName;
     }
 
-    public void setFailedTestResult(){
-        this.result = TestResult.FAILED;
+    public int getRequestCode() {
+        return requestCode;
     }
 
-    public void setNoPermissionTestResult(){
-        this.result = TestResult.NO_PERMISSION;
+    public TestResult getTestResult() {
+        return testResult;
+    }
+
+    public int getUntestedImageResource() {
+        return untestedImageResource;
+    }
+
+    public int getFailedImageResource() {
+        return failedImageResource;
+    }
+
+    public int getPassedImageResource() {
+        return passedImageResource;
+    }
+
+    public void setTestResult(TestResult testResult) {
+        this.testResult = testResult;
     }
 
     public void resetTestResult() {
-        this.result = TestResult.NOT_TESTED;
+        this.testResult = TestResult.NOT_TESTED;
     }
 }
