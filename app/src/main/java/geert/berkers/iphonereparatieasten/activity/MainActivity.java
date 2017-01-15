@@ -162,16 +162,16 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog.Builder createCallAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Bellen mislukt");
+        alertDialogBuilder.setTitle(R.string.call_failed);
         alertDialogBuilder.setIcon(android.R.drawable.ic_menu_call);
-        alertDialogBuilder.setMessage("Geen permissies toegestaan om te bellen.");
-        alertDialogBuilder.setPositiveButton("Geef rechten", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setMessage(R.string.no_call_permission);
+        alertDialogBuilder.setPositiveButton(R.string.give_rights, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 onCall();
             }
         });
-        alertDialogBuilder.setNegativeButton("Annuleren", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -501,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
         return reparaties;
     }
 
+    @SuppressWarnings({"unused", "UnnecessaryLocalVariable"})
     private List<Brand> getBrandsFromInternet() {
         List<Brand> brands = new ArrayList<>();
 

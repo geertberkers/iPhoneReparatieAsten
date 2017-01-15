@@ -100,11 +100,11 @@ public class CameraTestActivity extends AppCompatActivity {
         mCamera = openCamera(facing);
 
         if(facing == BACK) {
-            txtInfo.setText("Test back camera");
-            txtQuestion.setText("Zie je het beeld van de camera?");
+            txtInfo.setText(R.string.info_test_camera_back);
+            txtQuestion.setText(R.string.question_test_camera_back);
         } else {
-            txtInfo.setText("Test front camera");
-            txtQuestion.setText("Zie je het beeld van de front-camera?");
+            txtInfo.setText(R.string.info_test_camera_front);
+            txtQuestion.setText(R.string.question_test_camera_front);
         }
 
         CameraPreview mPreview = new CameraPreview(this, mCamera);

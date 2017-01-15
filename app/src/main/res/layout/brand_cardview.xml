@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:orientation="vertical">
@@ -22,10 +23,11 @@
                 android:id="@+id/modelImage"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:contentDescription="@string/model"
+                android:contentDescription="Model"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/samsung_logo"/>
+                android:src="@drawable/samsung_logo"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/modelName"
@@ -33,9 +35,10 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/modelImage"
                 android:gravity="top|center"
-                android:text="@string/brand"
+                android:text="Brand"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                tools:ignore="HardcodedText"/>
 
         </RelativeLayout>
 

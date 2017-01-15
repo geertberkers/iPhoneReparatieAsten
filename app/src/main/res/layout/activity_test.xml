@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="@string/test"
-        android:textAlignment="center"/>
+        android:text="Test"
+        android:textAlignment="center"
+        tools:ignore="HardcodedText"/>
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -25,8 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:text="@string/question"
-        android:textAlignment="center"/>
+        android:text="Question"
+        android:textAlignment="center"
+        tools:ignore="HardcodedText"/>
 
     <LinearLayout
         android:layout_width="match_parent"

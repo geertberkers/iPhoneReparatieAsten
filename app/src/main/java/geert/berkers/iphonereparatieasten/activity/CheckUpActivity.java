@@ -24,6 +24,7 @@ import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.activitytest.CameraTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
 import geert.berkers.iphonereparatieasten.enums.TestResult;
@@ -58,12 +59,14 @@ public class CheckUpActivity extends AppCompatActivity {
     TestResult headset;
     TestResult gps;
     TestResult touchscreen;
+    TestResult charger;
 
     private Button btnReset;
     private Button btnCamera;
     private Button btnHeadset;
     private Button btnTouchscreen;
     private Button btnGPS;
+    private Button btnCharger;
     private Button btnWifi;
 
     @Override
@@ -76,6 +79,8 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void createTestItemList() {
+        testItems = new ArrayList<>();
+
         //TODO: Get Device information
         //TODO: Check if device has:
         // -  Camera (back/front)
@@ -87,7 +92,7 @@ public class CheckUpActivity extends AppCompatActivity {
         // -  GYROSCOOP = 14;
         // -  ACCELEROMETER = 15;
 
-///        testItems.add(new TestItem("Camera"));
+        testItems.add(new TestItem("Camera"));
 
     }
 
@@ -99,6 +104,7 @@ public class CheckUpActivity extends AppCompatActivity {
         btnHeadset = (Button) findViewById(R.id.btnTestHeadset);
         btnTouchscreen = (Button) findViewById(R.id.btnTestTouchscreen);
         btnGPS = (Button) findViewById(R.id.btnTestGPS);
+        btnCharger = (Button) findViewById(R.id.btnTestCharger);
 
         btnReset.setVisibility(View.INVISIBLE);
     }
@@ -128,6 +134,12 @@ public class CheckUpActivity extends AppCompatActivity {
     public void testTouchscreen(View view) {
         if (view.getId() == R.id.btnTestTouchscreen) {
             startTouchscreenTest();
+        }
+    }
+
+    public void testCharger(View view) {
+        if (view.getId() == R.id.btnTestCharger) {
+            startChargerTest();
         }
     }
 
@@ -164,6 +176,10 @@ public class CheckUpActivity extends AppCompatActivity {
         startActivityForResult(gpsIntent, GPS);
     }
 
+    private void startChargerTest() {
+        Intent powerIntent = new Intent(CheckUpActivity.this, ChargerTestActivity.class);
+        startActivityForResult(powerIntent, CHARGER);
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -222,8 +238,8 @@ public class CheckUpActivity extends AppCompatActivity {
                 case GPS:           handleGPSResult(data);          break;
                 case TOUCHSCREEN:   handleTouchscreenResult(data);  break;
                 case WIFI:          handleWiFiResult(data);         break;
-                default:
-                    break;
+                case CHARGER:       handleChargerResult(data);      break;
+                default:            break;
             }
         }
 
@@ -254,9 +270,7 @@ public class CheckUpActivity extends AppCompatActivity {
     private void handleHeadsetResult(Intent data) {
         if (data != null) {
             boolean headsetIsWorking = data.getBooleanExtra("headsetIsWorking", false);
-
             headset = headsetIsWorking ? TestResult.PASSED : TestResult.FAILED;
-
             setButtonColor(btnHeadset, headsetIsWorking);
         }
     }
@@ -292,26 +306,33 @@ public class CheckUpActivity extends AppCompatActivity {
         }
     }
 
-    private void setButtonColor(Button button, boolean passed) {
-        if (passed) {
-            button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
-        } else {
-            button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+    private void handleChargerResult(Intent data) {
+        if (data != null) {
+            boolean chargerIsWorking = data.getBooleanExtra("chargerIsWorking", false);
+            charger = chargerIsWorking ? TestResult.PASSED : TestResult.FAILED;
+            setButtonColor(btnCharger, chargerIsWorking);
         }
+    }
+
+    private void setButtonColor(Button button, boolean passed) {
+        button.getBackground().setColorFilter(passed? Color.GREEN : Color.RED, PorterDuff.Mode.MULTIPLY);
     }
 
     private AlertDialog.Builder createResetAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Reset resultaten?");
+        alertDialogBuilder.setTitle(R.string.reset_test_results);
         alertDialogBuilder.setIcon(R.drawable.checkup);
-        alertDialogBuilder.setMessage("Weet u zeker dat u alle test resultaten wilt verwijderen?");
-        alertDialogBuilder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setMessage(R.string.confirmation);
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 //TODO: Reset button colors
                 btnCamera.getBackground().clearColorFilter();
                 btnGPS.getBackground().clearColorFilter();
+                btnHeadset.getBackground().clearColorFilter();
+                btnTouchscreen.getBackground().clearColorFilter();
+                btnCharger.getBackground().clearColorFilter();
 
                 // Reset TestResults of all tests
                 for(TestItem testItem : testItems){
@@ -320,10 +341,9 @@ public class CheckUpActivity extends AppCompatActivity {
 
                 // Hide button
                 btnReset.setVisibility(View.INVISIBLE);
-                //TODO: hide button till 1 test is done
             }
         });
-        alertDialogBuilder.setNegativeButton("Annuleren", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

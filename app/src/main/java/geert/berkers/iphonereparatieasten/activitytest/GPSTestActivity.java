@@ -50,6 +50,8 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
     private boolean gpsIsWorking;
 
     private static GoogleMap mMap;
+    private static String current_location;
+
     private LocationManager locationManager;
     private GPSLocationListener locationListener;
 
@@ -107,11 +109,10 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    @SuppressLint("SetTextI18n")
     @SuppressWarnings("MissingPermission")
     private void testGPS() {
-        txtInfo.setText("Wachten op GPS signaal.\nHeb even geduld aub.");
-        txtQuestion.setText("Klik op X als u na een minuut geen GPS hebt ontvangen.");
+        txtInfo.setText(R.string.info_test_gps);
+        txtQuestion.setText(R.string.question_test_gps);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 MIN_TIME_INTERVAL_BETWEEN_UPDATES,
@@ -138,6 +139,8 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
                 isWorking();
             }
         });
+
+        current_location = getString(R.string.current_location);
     }
 
     private void isWorking() {
@@ -164,13 +167,12 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
-    @SuppressLint("SetTextI18n")
     public static void setLocation(final Location location) {
-        txtInfo.setText("Locatie ontvangen:");
-        txtQuestion.setText("Is dit uw huidige locatie?");
+        txtInfo.setText(R.string.info_test_gps_received);
+        txtQuestion.setText(R.string.question_test_gps_received);
 
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(loc).title("Huidige locatie"));
+        mMap.addMarker(new MarkerOptions().position(loc).title(current_location));
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(15).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -186,16 +188,16 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
 
     private AlertDialog.Builder createLocationAlertDialog() {
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Locatie ophalen mislukt");
+        alertDialogBuilder.setTitle(R.string.location_failed);
         alertDialogBuilder.setIcon(R.drawable.ic_location);
-        alertDialogBuilder.setMessage("Geen permissies toegestaan om de locatie op te vragen.");
-        alertDialogBuilder.setPositiveButton("Geef rechten", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setMessage(R.string.no_location_permission);
+        alertDialogBuilder.setPositiveButton(R.string.give_rights, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 askLocationPermission();
             }
         });
-        alertDialogBuilder.setNegativeButton("Annuleren", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

@@ -1,4 +1,4 @@
-package geert.berkers.iphonereparatieasten.activitytest;
+package geert.berkers.iphonereparatieasten.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import geert.berkers.iphonereparatieasten.R;
+import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
 
 /**
  * Created by Geert.
@@ -125,6 +126,9 @@ public class PixelGridView extends View {
 
                         FloatingActionButton fabNotWorking = (FloatingActionButton) ((TouchscreenTestActivity) context).findViewById(R.id.fabNotWorking);
                         fabNotWorking.setVisibility(GONE);
+
+                        TextView txtQuestion = (TextView) ((TouchscreenTestActivity) context).findViewById(R.id.txtQuestion);
+                        txtQuestion.setText(R.string.result_test_touchscreen);
                     }
                 }
             }

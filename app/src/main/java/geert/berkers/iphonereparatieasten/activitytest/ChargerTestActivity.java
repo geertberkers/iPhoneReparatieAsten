@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaPlayer;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,19 +19,19 @@ import geert.berkers.iphonereparatieasten.R;
 /**
  * Created by Geert.
  */
-public class HeadsetTestActivity extends AppCompatActivity {
 
+public class ChargerTestActivity extends AppCompatActivity {
+
+    @SuppressWarnings("FieldCanBeLocal")
     private TextView txtInfo;
     private TextView txtQuestion;
 
-    private boolean headsetIsWorking;
+    private boolean chargerIsWorking;
 
     private ImageView imageView;
-    private MediaPlayer mediaPlayer;
-    private HeadsetBroadcastReceiver headsetBroadcastReceiver;
+    private PowerConnectionReceiver powerBroadcastReceiver;
 
     private FloatingActionButton fabWorking;
-    @SuppressWarnings("FieldCanBeLocal")
     private FloatingActionButton fabNotWorking;
 
     @Override
@@ -40,27 +40,30 @@ public class HeadsetTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Headset");
+        setTitle("Oplader");
 
-        startHeadsetBroadcastReceiver();
+        startPowerBroadcastReceiver();
     }
 
     @Override
     public void onPause() {
-        unregisterReceiver(headsetBroadcastReceiver);
+        unregisterReceiver(powerBroadcastReceiver);
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-        registerReceiver(headsetBroadcastReceiver, filter);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(powerBroadcastReceiver, filter);
         super.onResume();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
+
+        txtInfo.setText(R.string.info_test_charger);
 
         imageView = new ImageView(this);
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
@@ -85,71 +88,56 @@ public class HeadsetTestActivity extends AppCompatActivity {
     }
 
     private void isNotWorking() {
-        stopPlaying();
-        headsetIsWorking = false;
+        chargerIsWorking = false;
         setResult();
     }
 
     private void isWorking() {
-        stopPlaying();
-        headsetIsWorking = true;
+        chargerIsWorking = true;
         setResult();
     }
 
     private void setResult() {
         Intent intentMessage = new Intent();
-        intentMessage.putExtra("headsetIsWorking", headsetIsWorking);
+        intentMessage.putExtra("chargerIsWorking", chargerIsWorking);
         setResult(RESULT_OK, intentMessage);
         finish();
     }
 
-    private void startHeadsetBroadcastReceiver() {
-        headsetBroadcastReceiver = new HeadsetBroadcastReceiver();
+    private void startPowerBroadcastReceiver() {
+        powerBroadcastReceiver = new PowerConnectionReceiver();
     }
 
-    private void stopPlaying() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
-
-    public class HeadsetBroadcastReceiver extends BroadcastReceiver {
+    public class PowerConnectionReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
-                int state = intent.getIntExtra("state", -1);
-                switch (state) {
-                    case 0: handleNoHeadsetPluggedIn(); break;
-                    case 1: handleHeadsetPluggedIn();   break;
-                    default:
-                        System.out.println("Cannot find headset state");
-                }
+            int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+
+            if (checkConnected(plugged)) {
+                handlePowerPluggedIn();
+            } else {
+                handleNoPowerPluggedIn();
             }
+        }
+
+        private boolean checkConnected(int plugged) {
+            return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private void handleNoHeadsetPluggedIn() {
-        txtInfo.setText(R.string.info_test_headset);
-        txtQuestion.setText(R.string.question_test_headset);
-
-        stopPlaying();
-        fabWorking.setVisibility(View.GONE);
-        imageView.setImageResource(R.drawable.headset_unplugged);
+    private void handlePowerPluggedIn() {
+        txtQuestion.setText(R.string.result_test_charger);
+        fabWorking.setVisibility(View.VISIBLE);
+        fabNotWorking.setVisibility(View.GONE);
+        imageView.setImageResource(R.drawable.charger_plugged);
     }
 
     @SuppressLint("SetTextI18n")
-    private void handleHeadsetPluggedIn() {
-        txtInfo.setText(R.string.info_test_headset_play_sound);
-        txtQuestion.setText(R.string.question_test_headset_hear_sound);
-
-        stopPlaying();
-        fabWorking.setVisibility(View.VISIBLE);
-        imageView.setImageResource(R.drawable.headset_plugged);
-
-        mediaPlayer = MediaPlayer.create(HeadsetTestActivity.this, R.raw.nova);
-        mediaPlayer.start();
+    private void handleNoPowerPluggedIn() {
+        txtQuestion.setText(R.string.question_test_charger);
+        fabWorking.setVisibility(View.GONE);
+        fabNotWorking.setVisibility(View.VISIBLE);
+        imageView.setImageResource(R.drawable.charger_unplugged);
     }
 }

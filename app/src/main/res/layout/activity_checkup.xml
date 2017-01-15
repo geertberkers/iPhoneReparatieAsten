@@ -42,6 +42,13 @@
         android:text="Test Touchscreen"/>
 
     <Button
+        android:id="@+id/btnTestCharger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="testCharger"
+        android:text="Test Power"/>
+
+    <Button
         android:id="@+id/btnTestWifi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

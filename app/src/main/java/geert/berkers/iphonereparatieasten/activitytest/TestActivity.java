@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import geert.berkers.iphonereparatieasten.R;
@@ -18,6 +20,9 @@ public class TestActivity extends AppCompatActivity {
     private TextView txtInfo;
     private TextView txtQuestion;
 
+    private boolean somethingIsWorking;
+
+    private ImageView imageView;
     private FloatingActionButton fabWorking;
     private FloatingActionButton fabNotWorking;
 
@@ -28,12 +33,16 @@ public class TestActivity extends AppCompatActivity {
 
         initControls();
         setTitle("TestActivity");
-
     }
 
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
+
+        imageView = new ImageView(this);
+        FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
+        frame.removeAllViews();
+        frame.addView(imageView);
 
         fabNotWorking = (FloatingActionButton) findViewById(R.id.fabNotWorking);
         fabNotWorking.setOnClickListener(new View.OnClickListener() {
@@ -52,25 +61,19 @@ public class TestActivity extends AppCompatActivity {
         });
     }
 
-    public void isNotWorking() {
-        System.out.println("Camera is not working!");
-
-        //TODO: Handle isNotWorking
-
+    private void isNotWorking() {
+        somethingIsWorking = false;
+        setResult();
     }
 
-    public void isWorking() {
-        System.out.println("Camera is working!");
-
-        //TODO: Handle isWorking
+    private void isWorking() {
+        somethingIsWorking = true;
+        setResult();
     }
 
     private void setResult(){
         Intent intentMessage = new Intent();
-
-        //TODO: Set what is working and what not!
-        //intentMessage.putExtra("backCameraIsWorking", backCameraIsWorking);
-
+        intentMessage.putExtra("somethingIsWorking", somethingIsWorking);
         setResult(RESULT_OK, intentMessage);
         finish();
     }

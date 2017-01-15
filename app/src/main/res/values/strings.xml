@@ -1,12 +1,52 @@
 <resources>
     <string name="app_name">iPhone Reparatie Asten</string>
-    <string name="action_about">Over ons</string>
-    <string name="devicetype">DeviceType</string>
-    <string name="model">Model</string>
-    <string name="brand">Brand</string>
-    <string name="checkup">CheckUp</string>
+
     <string name="mail">Mail</string>
-    <string name="test">Test</string>
-    <string name="question">question?</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="checkup">CheckUp</string>
+    <string name="action_about">Over ons</string>
+
+    <!-- Permissions -->
+    <string name="cancel">Annuleren</string>
+    <string name="give_rights">Geef rechten</string>
+    <string name="call_failed">Bellen mislukt</string>
+    <string name="no_call_permission">Geen permissies toegestaan om te bellen.</string>
+    <string name="no_location_permission">Geen permissies toegestaan om de locatie op te vragen.</string>
+
+    <!-- Camera test-->
+    <string name="info_test_camera_back">Test back camera</string>
+    <string name="info_test_camera_front">Test front camera</string>
+    <string name="question_test_camera_back">Zie je het beeld van de camera?</string>
+    <string name="question_test_camera_front">Zie je het beeld van de front-camera?</string>
+
+    <!-- Headset test-->
+    <string name="info_test_headset">Plug een headset in.</string>
+    <string name="info_test_headset_play_sound">Er wordt een geluid afgespeeld</string>
+    <string name="question_test_headset">Is de headset ingeplugd maar niet herkend?</string>
+    <string name="question_test_headset_hear_sound">Hoort u geluid door uw headset?</string>
+
+    <!-- GPS test-->
+    <string name="info_test_gps">Wachten op GPS signaal.\nHeb even geduld aub.</string>
+    <string name="question_test_gps">Klik op X als u na een minuut geen GPS hebt ontvangen.</string>
+    <string name="info_test_gps_received">Locatie ontvangen:</string>
+    <string name="question_test_gps_received">Is dit uw huidige locatie?</string>
+
+    <string name="current_location">Huidige locatie</string>
+    <string name="location_failed">Locatie ophalen mislukt</string>
+
+    <!-- Touchscreen test-->
+    <string name="info_test_touschreen">Raak alle blokken aan!</string>
+    <string name="question_test_touchscreen">Het lukt niet om alle bokken aan te raken</string>
+    <string name="result_test_touchscreen">Alle blokken aangeraakt!</string>
+
+    <!-- Charger test-->
+    <string name="info_test_charger">Plug een USB-kabel in. (Die van stroom voorzien is)</string>
+    <string name="question_test_charger">"Is de kabel ingeplugd maar niet herkend?"</string>
+    <string name="result_test_charger">"Een ingeplugde USB-kabel is herkend."</string>
+
+    <!-- Other extracted strings -->
+    <string name="others">TODO: Remove this one!</string>
+    <string name="reset_test_results">Reset resultaten?</string>
+    <string name="confirmation">Weet u zeker dat u alle test resultaten wilt verwijderen?</string>
+    <string name="yes">Ja</string>
+
 </resources>
