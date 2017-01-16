@@ -1,9 +1,7 @@
 package geert.berkers.iphonereparatieasten.activitytest;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,21 +9,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import geert.berkers.iphonereparatieasten.receivers.HomeButtonReceiver;
+import geert.berkers.iphonereparatieasten.listeners.OnHomePressedListener;
 import geert.berkers.iphonereparatieasten.R;
-import geert.berkers.iphonereparatieasten.receivers.ScreenReceiver;
 
 /**
  * Created by Geert.
  */
 
-public class OnOffButtonTestActivity extends AppCompatActivity {
+public class HomeButtonTestActivity extends AppCompatActivity {
 
-    private boolean onOffButtonIsWorking;
+    private boolean homeButtonIsWorking;
 
     private FloatingActionButton fabWorking;
+    @SuppressWarnings("FieldCanBeLocal")
     private FloatingActionButton fabNotWorking;
 
-    private ScreenReceiver screenBroadcastReceiver;
+    private HomeButtonReceiver mHomeButtonReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,36 +33,14 @@ public class OnOffButtonTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Volume knoppen");
-        startRingerBroadcastReceiver();
-    }
-
-    @Override
-    protected void onDestroy() {
-        screenBroadcastReceiver.screenTurnedOff = false;
-        screenBroadcastReceiver.screenIsOnAgain = false;
-
-        unregisterReceiver(screenBroadcastReceiver);
-        super.onDestroy();
+        setTitle("Home knop");
     }
 
     @Override
     public void onResume() {
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(screenBroadcastReceiver, filter);
-
-        Handler handler = new Handler();
-        Runnable runner = new Runnable() {
-            @Override
-            public void run() {
-                if (screenBroadcastReceiver.screenTurnedOff && screenBroadcastReceiver.screenIsOnAgain) {
-                    fabWorking.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-
-        handler.postDelayed(runner, 500);
+        if(homeButtonIsWorking){
+            fabWorking.setVisibility(View.VISIBLE);
+        }
         super.onResume();
     }
 
@@ -70,11 +48,11 @@ public class OnOffButtonTestActivity extends AppCompatActivity {
         TextView txtInfo = (TextView) findViewById(R.id.txtInfo);
         TextView txtQuestion = (TextView) findViewById(R.id.txtQuestion);
 
-        txtInfo.setText(R.string.info_test_powerbutton);
-        txtQuestion.setText(R.string.question_test_powerbutton);
+        txtInfo.setText(R.string.info_test_homebutton);
+        txtQuestion.setText(R.string.question_test_homebutton);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.power_button);
+        imageView.setImageResource(R.drawable.home_button);
 
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
@@ -97,27 +75,35 @@ public class OnOffButtonTestActivity extends AppCompatActivity {
         });
 
         fabWorking.setVisibility(View.GONE);
+        homeButtonIsWorking = false;
 
-        onOffButtonIsWorking = false;
+        initHomeButtonWatcher();
     }
 
-    private void startRingerBroadcastReceiver() {
-        screenBroadcastReceiver = new ScreenReceiver();
+    private void initHomeButtonWatcher() {
+        mHomeButtonReceiver = new HomeButtonReceiver(this);
+        mHomeButtonReceiver.setOnHomePressedListener(new OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                homeButtonIsWorking = true;
+            }
+        });
+        mHomeButtonReceiver.startWatch();
     }
 
     private void isNotWorking() {
-        onOffButtonIsWorking = false;
+        homeButtonIsWorking = false;
         setResult();
     }
 
     private void isWorking() {
-        onOffButtonIsWorking = true;
         setResult();
     }
 
     private void setResult() {
+        mHomeButtonReceiver.stopWatch();
         Intent intentMessage = new Intent();
-        intentMessage.putExtra("onOffButtonIsWorking", onOffButtonIsWorking);
+        intentMessage.putExtra("homeButtonIsWorking", homeButtonIsWorking);
         setResult(RESULT_OK, intentMessage);
         finish();
     }

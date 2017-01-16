@@ -1,4 +1,4 @@
-package geert.berkers.iphonereparatieasten;
+package geert.berkers.iphonereparatieasten.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,10 +17,8 @@ public class ScreenReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             screenTurnedOff = true;
             screenIsOnAgain = false;
-            System.out.println("Screen turned off!");
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
             if(screenTurnedOff) {
-                System.out.println("Screen on again true!");
                 screenIsOnAgain = true;
             }
         }

@@ -53,11 +53,22 @@
     <string name="question_test_lcd">Alle kleuren zijn correct weergegeven</string>
 
     <!-- Power Button -->
-    <string name="info_test_powerbutton">Klik op de power knop</string>
+    <string name="info_test_powerbutton">Klik 2x op de power knop</string>
     <string name="question_test_powerbutton">Is het scherm uit en aan gegaan?</string>
 
+    <!-- Home Button -->
+    <string name="info_test_homebutton">Druk op de homeknop en open de app opnieuw!</string>
+    <string name="question_test_homebutton">Werkt de homeknop?</string>
+
+    <!-- Volume Button -->
+    <string name="info_test_volume">Verander de positie van de alert slider</string>
+    <string name="info_test_volume_up">Druk op de volume omhoog knop</string>
+    <string name="info_test_volume_down">Druk op de volume omlaag knop</string>
+    <string name="question_test_volume">Het drukken op de volume knop is niet gedetecteerd</string>
+    <string name="question_test_alertslider">Verandering van de alert slider is niet gedetecteerd</string>
+
     <!-- WiFi -->
-    <string name="network">Netwerk:</string>
+    <string name="network">Netwerk</string>
     <string name="ip_address">IP-Address</string>
     <string name="bssid">BSSID</string>
     <string name="start_test_wifi">Start WiFi test</string>

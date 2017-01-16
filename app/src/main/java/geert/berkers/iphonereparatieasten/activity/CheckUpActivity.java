@@ -25,6 +25,7 @@ import geert.berkers.iphonereparatieasten.activitytest.CompassTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.HomeButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.OnOffButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
@@ -387,7 +388,8 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void startHomeButtonTest() {
-
+        Intent powerIntent = new Intent(CheckUpActivity.this, HomeButtonTestActivity.class);
+        startActivityForResult(powerIntent, HOME_BUTTON);
     }
 
     private void startVolumeControlsTest() {
@@ -603,6 +605,15 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void handleHomeButtonResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean homeButtonIsWorking = data.getBooleanExtra("homeButtonIsWorking", false);
+                    testItem.setTestResult(homeButtonIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     private void handleVolumeControlsResult(int requestCode, Intent data) {

@@ -23,6 +23,7 @@ import geert.berkers.iphonereparatieasten.R;
 public class VolumeControlsTestActivity extends AppCompatActivity {
 
     private TextView txtInfo;
+    @SuppressWarnings("FieldCanBeLocal")
     private TextView txtQuestion;
 
     private boolean volumeUpTested;
@@ -67,8 +68,8 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
 
         //TODO: Handle alert slider if phone has one!
-        txtInfo.setText("Verander de positie van de alert slider");
-        txtQuestion.setText("Verandering van de alert slider is niet gedetecteerd");
+        //txtInfo.setText(R.string.info_test_volume);
+        //txtQuestion.setText(R.string.question_test_alertslider);
 
         imageView = new ImageView(this);
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
@@ -99,8 +100,8 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         alertSliderIsWorking = true;
 
         imageView.setImageResource(R.drawable.volume_up);
-        txtInfo.setText("Druk op de volume omhoog knop");
-        txtQuestion.setText("Het drukken op de volume knop is niet gedetecteerd");
+        txtInfo.setText(R.string.info_test_volume_up);
+        txtQuestion.setText(R.string.question_test_volume);
 
         volumeUpTested = false;
         volumeDownTested = false;
@@ -136,7 +137,7 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
                     volumeUpIsWorking = true;
 
                     imageView.setImageResource(R.drawable.volume_down);
-                    txtInfo.setText("Druk op de volume omlaag knop");
+                    txtInfo.setText(R.string.info_test_volume_down);
                 }
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:

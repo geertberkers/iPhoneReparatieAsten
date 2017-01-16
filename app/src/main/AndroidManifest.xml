@@ -65,6 +65,7 @@
         <activity
             android:name=".activity.CheckUpActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -150,6 +151,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.CheckUpActivity"/>
         </activity>
+
         <activity
             android:name=".activitytest.OnOffButtonTestActivity"
             android:launchMode="singleTop"
@@ -159,6 +161,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.CheckUpActivity"/>
         </activity>
+
+        <activity
+            android:name=".activitytest.HomeButtonTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
         <activity
             android:name=".activitytest.VolumeControlsTestActivity"
             android:launchMode="singleTop"
@@ -195,7 +208,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".ScreenReceiver">
+        <receiver android:name=".receivers.ScreenReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_ON"/>
                 <action android:name="android.intent.action.SCREEN_OFF"/>
