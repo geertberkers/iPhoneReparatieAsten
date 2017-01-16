@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,9 @@ import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.OnOffButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.VolumeControlsTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.WiFiTestActivity;
 import geert.berkers.iphonereparatieasten.adapter.TestItemAdapter;
 import geert.berkers.iphonereparatieasten.enums.TestResult;
@@ -51,11 +52,12 @@ public class CheckUpActivity extends AppCompatActivity {
     private final static int HOME_BUTTON = 9;
     private final static int VOLUME_CONTROLS = 10;
     private final static int SPEAKER = 11;
-    private final static int MICROPHONE = 12;
-    private final static int MULTITOUCH = 13;
-    private final static int GYROSCOPE = 14;
-    private final static int ACCELEROMETER = 15;
-    private final static int WIFI = 16;
+    private final static int VIBRATOR = 12;
+    private final static int MICROPHONE = 13;
+    private final static int MULTITOUCH = 14;
+    private final static int GYROSCOPE = 15;
+    private final static int ACCELEROMETER = 16;
+    private final static int WIFI = 17;
 
     private Button btnReset;
     private List<TestItem> testItems;
@@ -96,7 +98,7 @@ public class CheckUpActivity extends AppCompatActivity {
                     public void onClick(int position) {
                         TestItem selectedItem = testItems.get(position);
 
-                        switch (selectedItem.getRequestCode()){
+                        switch (selectedItem.getRequestCode()) {
                             case CAMERA:            startCameraTest();          break;
                             case HEADSET:           startHeadsetTest();         break;
                             case GPS:               startGPSTest();             break;
@@ -104,23 +106,24 @@ public class CheckUpActivity extends AppCompatActivity {
                             case LCD:               startLCDTest();             break;
                             case COMPASS:           startCompassTest();         break;
                             case CHARGER:           startChargerTest();         break;
-//                            case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
-//                            case HOME_BUTTON:       startHomeButtonTest();      break;
-//                            case VOLUME_CONTROLS:   startVolumeControlsTest();  break;
-//                            case SPEAKER:           startSpeakerTest();         break;
-//                            case MICROPHONE:        startMicrophoneTest();      break;
-//                            case MULTITOUCH:        startMultiTouchTest();      break;
-//                            case GYROSCOPE:         startGyroscopeTest();       break;
-//                            case ACCELEROMETER:     startAccelerometerTest();   break;
-                            case WIFI:              startWiFiTest();        break;
-                            default: break;
+                            case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
+                            case HOME_BUTTON:       startHomeButtonTest();      break;
+                            case VOLUME_CONTROLS:   startVolumeControlsTest();  break;
+                            case SPEAKER:           startSpeakerTest();         break;
+                            case VIBRATOR:          startVibratorTest();        break;
+                            case MICROPHONE:        startMicrophoneTest();      break;
+                            case MULTITOUCH:        startMultiTouchTest();      break;
+                            case GYROSCOPE:         startGyroscopeTest();       break;
+                            case ACCELEROMETER:     startAccelerometerTest();   break;
+                            case WIFI:              startWiFiTest();            break;
+                            default:                                            break;
                         }
                     }
                 })
         );
-
     }
 
+    //region Methods to create TestList
     private void createTestItemList() {
         testItems = new ArrayList<>();
 
@@ -135,6 +138,7 @@ public class CheckUpActivity extends AppCompatActivity {
         addHomeButtonTest();
         addVolumeButtonsTest();
         addSpeakerTest();
+        addVibratorTest();
         addMicrophoneTest();
         addMultiTouchTest();
         addGyroscopeTest();
@@ -192,13 +196,13 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void addCompassTest() {
-        if(checkCompassHardware())
-        testItems.add(new TestItem(
-                "Compas", COMPASS,
-                R.drawable.untested_compass,
-                R.drawable.failed_compas,
-                R.drawable.passed_compas)
-        );
+        if (checkCompassHardware())
+            testItems.add(new TestItem(
+                    "Compas", COMPASS,
+                    R.drawable.untested_compass,
+                    R.drawable.failed_compas,
+                    R.drawable.passed_compas)
+            );
     }
 
     private void addChargerTest() {
@@ -246,6 +250,15 @@ public class CheckUpActivity extends AppCompatActivity {
                 R.drawable.untested_speaker,
                 R.drawable.failed_speaker,
                 R.drawable.passed_speaker)
+        );
+    }
+
+    private void addVibratorTest() {
+        testItems.add(new TestItem(
+                "Vibrator", VIBRATOR,
+                R.drawable.untested_vibrator,
+                R.drawable.failed_vibrator,
+                R.drawable.passed_vibrator)
         );
     }
 
@@ -298,6 +311,8 @@ public class CheckUpActivity extends AppCompatActivity {
         );
     }
 
+    // endregion
+
     public void resetTestResults(View view) {
         if (view.getId() == R.id.btnReset) {
             createResetAlertDialog().show();
@@ -306,6 +321,7 @@ public class CheckUpActivity extends AppCompatActivity {
 
     /**
      * Check if this device has a camera
+     *
      * @return true if it has a camera false if it doesn't
      */
     private boolean checkCameraHardware() {
@@ -313,14 +329,16 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     /**
-     *  Check if this device has a compass
+     * Check if this device has a compass
+     *
      * @return true if it has a compass false if it doesn't
      */
+    @SuppressWarnings("deprecation")
     private boolean checkCompassHardware() {
         //TODO: Replace with newer version
         SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (int i = 0; i< deviceSensors.size(); i++) {
+        for (int i = 0; i < deviceSensors.size(); i++) {
             if (deviceSensors.get(i).getType() == Sensor.TYPE_ORIENTATION) {
                 return true;
             }
@@ -338,14 +356,24 @@ public class CheckUpActivity extends AppCompatActivity {
         startActivityForResult(headsetIntent, HEADSET);
     }
 
+    private void startGPSTest() {
+        Intent gpsIntent = new Intent(CheckUpActivity.this, GPSTestActivity.class);
+        startActivityForResult(gpsIntent, GPS);
+    }
+
     private void startTouchscreenTest() {
         Intent touchscreenTest = new Intent(CheckUpActivity.this, TouchscreenTestActivity.class);
         startActivityForResult(touchscreenTest, TOUCHSCREEN);
     }
 
-    private void startGPSTest() {
-        Intent gpsIntent = new Intent(CheckUpActivity.this, GPSTestActivity.class);
-        startActivityForResult(gpsIntent, GPS);
+    private void startLCDTest() {
+        Intent lcdIntent = new Intent(CheckUpActivity.this, LCDTestActivity.class);
+        startActivityForResult(lcdIntent, LCD);
+    }
+
+    private void startCompassTest() {
+        Intent powerIntent = new Intent(CheckUpActivity.this, CompassTestActivity.class);
+        startActivityForResult(powerIntent, COMPASS);
     }
 
     private void startChargerTest() {
@@ -353,37 +381,47 @@ public class CheckUpActivity extends AppCompatActivity {
         startActivityForResult(powerIntent, CHARGER);
     }
 
-    private void startCompassTest() {
-        Intent powerIntent = new Intent(CheckUpActivity.this, CompassTestActivity.class);
-        startActivityForResult(powerIntent, COMPASS);
-    }
-    private void startLCDTest() {
-        Intent lcdIntent = new Intent(CheckUpActivity.this, LCDTestActivity.class);
-        startActivityForResult(lcdIntent, LCD);
+    private void startOnOffButtonTest() {
+        Intent powerIntent = new Intent(CheckUpActivity.this, OnOffButtonTestActivity.class);
+        startActivityForResult(powerIntent, ON_OFF_BUTTON);
     }
 
+    private void startHomeButtonTest() {
+
+    }
+
+    private void startVolumeControlsTest() {
+        Intent powerIntent = new Intent(CheckUpActivity.this, VolumeControlsTestActivity.class);
+        startActivityForResult(powerIntent, VOLUME_CONTROLS);
+    }
+
+    private void startSpeakerTest() {
+
+    }
+
+    private void startVibratorTest() {
+
+    }
+
+    private void startMicrophoneTest() {
+
+    }
+
+    private void startMultiTouchTest() {
+
+    }
+
+    private void startGyroscopeTest() {
+
+    }
+
+    private void startAccelerometerTest() {
+
+    }
 
     public void startWiFiTest() {
         Intent testIntent = new Intent(CheckUpActivity.this, WiFiTestActivity.class);
         startActivityForResult(testIntent, WIFI);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                logButtonPress("Volume down");
-                return true;
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                logButtonPress("Volume up");
-                return true;
-            default:
-                return super.onKeyDown(keyCode, event);
-        }
-    }
-
-    private void logButtonPress(String button) {
-        System.out.println(button);
     }
 
     @Override
@@ -394,7 +432,7 @@ public class CheckUpActivity extends AppCompatActivity {
             Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
             emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             emailIntent.setType("plain/text");
-            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {Information.EMAIL});
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{Information.EMAIL});
             emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Resultaten Checkup");
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, createMessageFromResult());
             startActivity(Intent.createChooser(emailIntent, "Verstuur mail met..."));
@@ -420,15 +458,24 @@ public class CheckUpActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case CAMERA:        handleCameraResult(requestCode, data);      break;
-                case HEADSET:       handleHeadsetResult(requestCode, data);     break;
-                case GPS:           handleGPSResult(requestCode, data);         break;
-                case TOUCHSCREEN:   handleTouchscreenResult(requestCode, data); break;
-                case LCD:           handleLCDResult(requestCode, data);         break;
-                case WIFI:          handleWiFiResult(requestCode, data);        break;
-                case COMPASS:       handleCompassResult(requestCode, data);     break;
-                case CHARGER:       handleChargerResult(requestCode, data);     break;
-                default:            break;
+                case CAMERA:            handleCameraResult(requestCode, data);          break;
+                case HEADSET:           handleHeadsetResult(requestCode, data);         break;
+                case GPS:               handleGPSResult(requestCode, data);             break;
+                case TOUCHSCREEN:       handleTouchscreenResult(requestCode, data);     break;
+                case LCD:               handleLCDResult(requestCode, data);             break;
+                case COMPASS:           handleCompassResult(requestCode, data);         break;
+                case CHARGER:           handleChargerResult(requestCode, data);         break;
+                case ON_OFF_BUTTON:     handleOnOffButtonResult(requestCode, data);     break;
+                case HOME_BUTTON:       handleHomeButtonResult(requestCode, data);      break;
+                case VOLUME_CONTROLS:   handleVolumeControlsResult(requestCode, data);  break;
+                case SPEAKER:           handleSpeakerResult(requestCode, data);         break;
+                case VIBRATOR:          handleVibratorResult(requestCode, data);        break;
+                case MICROPHONE:        handleMicrophoneResult(requestCode, data);      break;
+                case MULTITOUCH:        handleMultitouchResult(requestCode, data);      break;
+                case GYROSCOPE:         handleGyroscopeResult(requestCode, data);       break;
+                case ACCELEROMETER:     handleAcceleroMeterResult(requestCode, data);   break;
+                case WIFI:              handleWiFiResult(requestCode, data);            break;
+                default:                                                                break;
             }
 
             btnReset.setVisibility(View.VISIBLE);
@@ -442,12 +489,12 @@ public class CheckUpActivity extends AppCompatActivity {
             boolean backCameraIsWorking = data.getBooleanExtra("backCameraIsWorking", false);
             boolean frontCameraIsWorking = data.getBooleanExtra("frontCameraIsWorking", false);
 
-            for (TestItem testItem : testItems){
-                if(testItem.getRequestCode() == requestCode){
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
 
                     //TODO: Check how to save multiple items!
                     // Save result
-                    if(noPermission){
+                    if (noPermission) {
                         testItem.setTestResult(TestResult.NO_PERMISSION);
 
                         //backCamera = TestResult.NO_PERMISSION;
@@ -481,9 +528,9 @@ public class CheckUpActivity extends AppCompatActivity {
             boolean noPermission = data.getBooleanExtra("noPermission", false);
             boolean gpsIsWorking = data.getBooleanExtra("gpsIsWorking", false);
 
-            for (TestItem testItem : testItems){
-                if(testItem.getRequestCode() == requestCode){
-                    if(noPermission){
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    if (noPermission) {
                         testItem.setTestResult(TestResult.NO_PERMISSION);
                     } else {
                         testItem.setTestResult(gpsIsWorking ? TestResult.PASSED : TestResult.FAILED);
@@ -507,12 +554,24 @@ public class CheckUpActivity extends AppCompatActivity {
         }
     }
 
-    private void handleWiFiResult(int requestCode, Intent data) {
+    private void handleLCDResult(int requestCode, Intent data) {
         if (data != null) {
             for (TestItem testItem : testItems) {
                 if (testItem.getRequestCode() == requestCode) {
-                    boolean wifiIsWorking = data.getBooleanExtra("wifiIsWorking", false);
-                    testItem.setTestResult(wifiIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    boolean headsetIsWorking = data.getBooleanExtra("lcdIsWorking", false);
+                    testItem.setTestResult(headsetIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    private void handleCompassResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean compassIsWorking = data.getBooleanExtra("compassIsWorking", false);
+                    testItem.setTestResult(compassIsWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }
@@ -531,30 +590,69 @@ public class CheckUpActivity extends AppCompatActivity {
         }
     }
 
-
-    private void handleCompassResult(int requestCode, Intent data) {
+    private void handleOnOffButtonResult(int requestCode, Intent data) {
         if (data != null) {
             for (TestItem testItem : testItems) {
                 if (testItem.getRequestCode() == requestCode) {
-                    boolean compassIsWorking = data.getBooleanExtra("compassIsWorking", false);
-                    testItem.setTestResult(compassIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    boolean onOffButtonIsWorking = data.getBooleanExtra("onOffButtonIsWorking", false);
+                    testItem.setTestResult(onOffButtonIsWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }
         }
     }
 
-    private void handleLCDResult(int requestCode, Intent data) {
+    private void handleHomeButtonResult(int requestCode, Intent data) {
+    }
+
+    private void handleVolumeControlsResult(int requestCode, Intent data) {
+        if (data != null) {
+            boolean alertSliderIsWorking = data.getBooleanExtra("alertSliderIsWorking", false);
+            boolean volumeUpIsWorking = data.getBooleanExtra("volumeUpIsWorking", false);
+            boolean volumeDownIsWorking = data.getBooleanExtra("volumeDownIsWorking", false);
+
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    //TODO: Check how to save multiple items!
+                    //TODO: Handle result for alert slider!
+                    testItem.setTestResult((volumeUpIsWorking && volumeDownIsWorking) ? TestResult.PASSED : TestResult.FAILED);
+                }
+
+                testItemAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private void handleSpeakerResult(int requestCode, Intent data) {
+    }
+
+    private void handleVibratorResult(int requestCode, Intent data) {
+    }
+
+    private void handleMicrophoneResult(int requestCode, Intent data) {
+    }
+
+    private void handleMultitouchResult(int requestCode, Intent data) {
+    }
+
+    private void handleGyroscopeResult(int requestCode, Intent data) {
+    }
+
+    private void handleAcceleroMeterResult(int requestCode, Intent data) {
+    }
+
+    private void handleWiFiResult(int requestCode, Intent data) {
         if (data != null) {
             for (TestItem testItem : testItems) {
                 if (testItem.getRequestCode() == requestCode) {
-                    boolean headsetIsWorking = data.getBooleanExtra("lcdIsWorking", false);
-                    testItem.setTestResult(headsetIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    boolean wifiIsWorking = data.getBooleanExtra("wifiIsWorking", false);
+                    testItem.setTestResult(wifiIsWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }
         }
     }
+
 
     private AlertDialog.Builder createResetAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -566,7 +664,7 @@ public class CheckUpActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // Reset TestResults of all tests
-                for(TestItem testItem : testItems){
+                for (TestItem testItem : testItems) {
                     testItem.resetTestResult();
                     testItemAdapter.notifyDataSetChanged();
                 }
