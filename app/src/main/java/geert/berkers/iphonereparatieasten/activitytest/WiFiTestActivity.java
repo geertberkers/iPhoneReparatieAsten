@@ -108,7 +108,7 @@ public class WiFiTestActivity extends AppCompatActivity {
         finish();
     }
 
-    public void getWifiInformation() {
+    private void getWifiInformation() {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 

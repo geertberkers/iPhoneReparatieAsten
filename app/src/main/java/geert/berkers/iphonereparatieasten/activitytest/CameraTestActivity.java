@@ -208,7 +208,7 @@ public class CameraTestActivity extends AppCompatActivity {
         }
     }
 
-    public void isNotWorking() {
+    private void isNotWorking() {
         if(!backCameraTested){
             backCameraTested = true;
             backCameraIsWorking = false;
@@ -220,7 +220,7 @@ public class CameraTestActivity extends AppCompatActivity {
         }
     }
 
-    public void isWorking() {
+    private void isWorking() {
         if(!backCameraTested){
             backCameraTested = true;
             backCameraIsWorking = true;

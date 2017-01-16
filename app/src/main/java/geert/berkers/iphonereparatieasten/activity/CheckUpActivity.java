@@ -421,7 +421,7 @@ public class CheckUpActivity extends AppCompatActivity {
 
     }
 
-    public void startWiFiTest() {
+    private void startWiFiTest() {
         Intent testIntent = new Intent(CheckUpActivity.this, WiFiTestActivity.class);
         startActivityForResult(testIntent, WIFI);
     }

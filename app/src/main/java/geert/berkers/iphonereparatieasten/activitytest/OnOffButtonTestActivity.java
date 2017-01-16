@@ -23,6 +23,7 @@ public class OnOffButtonTestActivity extends AppCompatActivity {
     private boolean onOffButtonIsWorking;
 
     private FloatingActionButton fabWorking;
+    @SuppressWarnings("FieldCanBeLocal")
     private FloatingActionButton fabNotWorking;
 
     private ScreenReceiver screenBroadcastReceiver;

@@ -8,16 +8,20 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:layout_above="@+id/btnReset"/>
+        android:layout_above="@+id/btnReset"
+        android:scrollbars="vertical"/>
 
     <Button
         android:id="@+id/btnReset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/reset_background"
         android:onClick="resetTestResults"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="@string/reset"/>
+        android:text="@string/reset"
+        android:textColor="@android:color/white"/>
 </RelativeLayout>

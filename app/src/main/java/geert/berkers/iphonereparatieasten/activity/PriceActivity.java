@@ -34,6 +34,7 @@ public class PriceActivity extends AppCompatActivity {
 
             ImageView modelImage = (ImageView) findViewById(R.id.modelImage);
             modelImage.setImageResource(model.getModelImage());
+            modelImage.setContentDescription(model.getModelName());
 
             initRecyclerView(model.getReparaties());
         } else {

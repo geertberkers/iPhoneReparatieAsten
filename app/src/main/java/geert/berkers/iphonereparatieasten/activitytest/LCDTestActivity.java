@@ -57,7 +57,7 @@ public class LCDTestActivity extends AppCompatActivity {
         });
     }
 
-    public void startColorTest(View view, int colorResource){
+    private void startColorTest(View view, int colorResource){
         Intent colorTestIntent = new Intent(LCDTestActivity.this, ColorTestActivity.class);
         colorTestIntent.putExtra("color", colorResource);
 

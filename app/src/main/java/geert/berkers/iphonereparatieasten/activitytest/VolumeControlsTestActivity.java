@@ -154,7 +154,7 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         }
     }
 
-    public static void getRingerMode(Context context) {
+    private static void getRingerMode(Context context) {
         AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
         switch (audioManager.getRingerMode()) {
             case AudioManager.RINGER_MODE_SILENT:

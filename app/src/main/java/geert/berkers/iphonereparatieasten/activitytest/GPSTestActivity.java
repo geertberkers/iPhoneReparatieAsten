@@ -39,7 +39,10 @@ import geert.berkers.iphonereparatieasten.listeners.GPSLocationListener;
 @SuppressLint("StaticFieldLeak")
 public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static final int LOCATION = 1;
+    private final static int LOCATION = 1;
+
+    private final static double LATITUDE_START = 52.23;
+    private final static double LONGITUDE_START = 4.55;
 
     private final static int MIN_DISTANCE_BETWEEN_UPDATES = 10;
     private final static int MIN_TIME_INTERVAL_BETWEEN_UPDATES = 1000;
@@ -172,6 +175,7 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
         txtQuestion.setText(R.string.question_test_gps_received);
 
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.clear();
         mMap.addMarker(new MarkerOptions().position(loc).title(current_location));
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(15).build();
@@ -218,5 +222,8 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        LatLng startLocationMap = new LatLng(LATITUDE_START, LONGITUDE_START);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(startLocationMap).zoom(6f).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

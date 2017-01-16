@@ -19,7 +19,7 @@ import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
  */
 public class PixelGridView extends View {
 
-    private Context context;
+    private final Context context;
 
     private int counter;
     private int numRows;
@@ -27,8 +27,8 @@ public class PixelGridView extends View {
     private int cellWidth;
     private int cellHeight;
 
-    private Paint blackPaint = new Paint();
-    private Paint greenPaint = new Paint();
+    private final Paint blackPaint = new Paint();
+    private final Paint greenPaint = new Paint();
 
     private boolean[][] cellChecked;
 

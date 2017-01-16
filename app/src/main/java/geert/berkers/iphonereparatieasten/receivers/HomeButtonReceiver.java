@@ -12,8 +12,8 @@ import geert.berkers.iphonereparatieasten.listeners.OnHomePressedListener;
  */
 public class HomeButtonReceiver {
 
-    private Context context;
-    private IntentFilter intentFilter;
+    private final Context context;
+    private final IntentFilter intentFilter;
     private OnHomePressedListener onHomePressedListener;
     private HomeButtonBroadcastReceiver homeButtonBroadcastReceiver;
 
