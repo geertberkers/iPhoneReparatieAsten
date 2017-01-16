@@ -150,6 +150,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.CheckUpActivity"/>
         </activity>
+        <activity
+            android:name=".activitytest.OnOffButtonTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+        <activity
+            android:name=".activitytest.VolumeControlsTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
 
         <activity
             android:name=".activitytest.WiFiTestActivity"
@@ -174,6 +192,19 @@
         <receiver android:name=".activitytest.ChargerTestActivity$PowerConnectionReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".ScreenReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON"/>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".activitytest.VolumeControlsTestActivity$RingerModeBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.media.RINGER_MODE_CHANGED"/>
             </intent-filter>
         </receiver>
 

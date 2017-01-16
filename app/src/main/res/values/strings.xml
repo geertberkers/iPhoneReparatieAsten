@@ -48,6 +48,14 @@
     <string name="test_question_compass">Kun je de hele cirkel getekend krijgen?</string>
     <string name="result_test_compass">Compas check compleet!</string>
 
+    <!-- LCD -->
+    <string name="info_test_lcd">Klik elke kleur aan om te zoeken naar dode pixels</string>
+    <string name="question_test_lcd">Alle kleuren zijn correct weergegeven</string>
+
+    <!-- Power Button -->
+    <string name="info_test_powerbutton">Klik op de power knop</string>
+    <string name="question_test_powerbutton">Is het scherm uit en aan gegaan?</string>
+
     <!-- WiFi -->
     <string name="network">Netwerk:</string>
     <string name="ip_address">IP-Address</string>
@@ -64,8 +72,5 @@
 
     <!-- Other extracted strings -->
     <string name="others">TODO: Remove this one!</string>
-    <string name="info_test_lcd">Klik elke kleur aan om te zoeken naar dode pixels</string>
-    <string name="question_test_lcd">Alle kleuren zijn correct weergegeven</string>
-
 
 </resources>
