@@ -167,7 +167,7 @@ public class FlashTestActivity extends AppCompatActivity {
         fabNotWorking.setVisibility(View.VISIBLE);
     }
 
-    public void stopFlashLight() {
+    private void stopFlashLight() {
         camera.release();
     }
 

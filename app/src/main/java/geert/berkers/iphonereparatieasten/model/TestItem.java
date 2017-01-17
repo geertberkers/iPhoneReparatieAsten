@@ -7,14 +7,14 @@ import geert.berkers.iphonereparatieasten.enums.TestResult;
  */
 public class TestItem {
 
-    private String testName;
-    private int requestCode;
+    private final String testName;
+    private final int requestCode;
     //TODO: Make this a list
     private TestResult testResult;
 
-    private int untestedImageResource;
-    private int failedImageResource;
-    private int passedImageResource;
+    private final int untestedImageResource;
+    private final int failedImageResource;
+    private final int passedImageResource;
 
     public TestItem(String testName,
                     int requestCode,

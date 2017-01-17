@@ -147,16 +147,14 @@ public class PixelGridView extends View {
         TextView question = (TextView) ((TouchscreenTestActivity) context).findViewById(R.id.txtQuestion);
         LinearLayout bottom = (LinearLayout) ((TouchscreenTestActivity) context).findViewById(R.id.bottom);
 
-        if (context instanceof TouchscreenTestActivity) {
-            if (hide) {
-                info.setVisibility(GONE);
-                question.setVisibility(GONE);
-                bottom.setVisibility(GONE);
-            } else {
-                info.setVisibility(VISIBLE);
-                question.setVisibility(VISIBLE);
-                bottom.setVisibility(VISIBLE);
-            }
+        if (hide) {
+            info.setVisibility(GONE);
+            question.setVisibility(GONE);
+            bottom.setVisibility(GONE);
+        } else {
+            info.setVisibility(VISIBLE);
+            question.setVisibility(VISIBLE);
+            bottom.setVisibility(VISIBLE);
         }
     }
 }

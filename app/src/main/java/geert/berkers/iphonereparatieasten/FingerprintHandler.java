@@ -1,7 +1,5 @@
 package geert.berkers.iphonereparatieasten;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -18,20 +16,20 @@ import geert.berkers.iphonereparatieasten.activitytest.FingerprintTestActivity;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
-    private FingerprintTestActivity appContext;
+    private final FingerprintTestActivity appContext;
 
     public FingerprintHandler(FingerprintTestActivity context) {
         appContext = context;
     }
 
     @Override
-    public void onAuthenticationError(int errMsgId, CharSequence errString) {
-        Toast.makeText(appContext, "Authentication error\n" + errString, Toast.LENGTH_LONG).show();
+    public void onAuthenticationError(int errMsgId, CharSequence error) {
+        Toast.makeText(appContext, error, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-        Toast.makeText(appContext, "Authentication help\n" + helpString, Toast.LENGTH_LONG).show();
+    public void onAuthenticationHelp(int helpMsgId, CharSequence help) {
+        Toast.makeText(appContext, help, Toast.LENGTH_LONG).show();
     }
 
     @Override

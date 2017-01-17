@@ -21,6 +21,7 @@ import geert.berkers.iphonereparatieasten.R;
 /**
  * Created by Geert.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class SpeakerTestActivity  extends AppCompatActivity {
 
     private TextView txtInfo;

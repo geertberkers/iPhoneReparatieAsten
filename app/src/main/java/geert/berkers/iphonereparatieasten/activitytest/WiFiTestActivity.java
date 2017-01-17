@@ -141,13 +141,13 @@ public class WiFiTestActivity extends AppCompatActivity {
         View view = inflater.inflate(R.layout.wifi_result_layout, frame, false);
 
         frame.addView(view);
-        TextView txtNetwork = (TextView) view.findViewById(R.id.txtNetwork);
-        TextView txtBSSID = (TextView) view.findViewById(R.id.txtBSSID);
-        TextView txtIPAddress = (TextView) view.findViewById(R.id.txtIPAddress);
+        TextView txtNetwork = (TextView) findViewById(R.id.txtNetwork);
+        TextView txtBSSID = (TextView) findViewById(R.id.txtBSSID);
+        TextView txtIPAddress = (TextView) findViewById(R.id.txtIPAddress);
 
-        ImageView resultNetwork = (ImageView) view.findViewById(R.id.resultNetwork);
-        ImageView resultBSSID = (ImageView) view.findViewById(R.id.resultBSSID);
-        ImageView resultIPAddress = (ImageView) view.findViewById(R.id.resultIPAddress);
+        ImageView resultNetwork = (ImageView) findViewById(R.id.resultNetwork);
+        ImageView resultBSSID = (ImageView) findViewById(R.id.resultBSSID);
+        ImageView resultIPAddress = (ImageView) findViewById(R.id.resultIPAddress);
 
 
         if (bssid != null && !bssid.equals("")) {
@@ -176,8 +176,6 @@ public class WiFiTestActivity extends AppCompatActivity {
             resultNetwork.setImageResource(R.drawable.ic_uncheck);
             resultNetwork.setColorFilter(Color.RED);
         }
-
-        
     }
 
     private String getBSSID(WifiInfo wifiInfo) {

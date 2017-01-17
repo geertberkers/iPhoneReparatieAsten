@@ -28,6 +28,7 @@ import java.util.List;
 
 import geert.berkers.iphonereparatieasten.Information;
 import geert.berkers.iphonereparatieasten.R;
+import geert.berkers.iphonereparatieasten.activitytest.AccuTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.CallSpeakerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.CameraTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
@@ -63,19 +64,20 @@ public class CheckUpActivity extends AppCompatActivity {
     private final static int FLASH = 6;
     private final static int COMPASS = 7;
     private final static int CHARGER = 8;
-    private final static int ON_OFF_BUTTON = 9;
-    private final static int HOME_BUTTON = 10;
-    private final static int FINGERPRINT = 11;
-    private final static int VOLUME_CONTROLS = 12;
-    private final static int SPEAKER = 13;
-    private final static int CALL_SPEAKER = 14;
-    private final static int VIBRATOR = 15;
-    private final static int MICROPHONE = 16;
-    private final static int MULTITOUCH = 17;
-    private final static int GYROSCOPE = 18;
-    private final static int ACCELEROMETER = 19;
-    private final static int WIFI = 20;
-    private final static int NFC = 21;
+    private final static int ACCU = 9;
+    private final static int ON_OFF_BUTTON = 10;
+    private final static int HOME_BUTTON = 11;
+    private final static int FINGERPRINT = 12;
+    private final static int VOLUME_CONTROLS = 13;
+    private final static int SPEAKER = 14;
+    private final static int CALL_SPEAKER = 15;
+    private final static int VIBRATOR = 16;
+    private final static int MICROPHONE = 17;
+    private final static int MULTITOUCH = 18;
+    private final static int GYROSCOPE = 19;
+    private final static int ACCELEROMETER = 20;
+    private final static int WIFI = 21;
+    private final static int NFC = 22;
 
     private static final int FINGERPRINT_REQUEST_CODE = 999;
 
@@ -106,6 +108,11 @@ public class CheckUpActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         btnReset.setVisibility(View.GONE);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        }
     }
 
     private void initRecyclerView() {
@@ -129,6 +136,7 @@ public class CheckUpActivity extends AppCompatActivity {
                             case FLASH:             startFlashTest();           break;
                             case COMPASS:           startCompassTest();         break;
                             case CHARGER:           startChargerTest();         break;
+                            case ACCU:              startAccuTest();            break;
                             case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
                             case HOME_BUTTON:       startHomeButtonTest();      break;
                             case FINGERPRINT:       startFingerPrintTest();     break;
@@ -161,6 +169,7 @@ public class CheckUpActivity extends AppCompatActivity {
         addFlashTest();
         addCompassTest();
         addChargerTest();
+        addAccuTest();
         addPowerButtonTest();
         addHomeButtonTest();
         addFingerPrintTest();
@@ -180,9 +189,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if (checkCameraHardware()) {
             testItems.add(new TestItem(
                     "Camera", CAMERA,
-                    R.drawable.camera,
-                    R.drawable.failed_camera,
-                    R.drawable.passed_camera)
+                    R.drawable.camera_untested,
+                    R.drawable.camera_failed,
+                    R.drawable.camera_passed)
             );
         }
     }
@@ -191,9 +200,9 @@ public class CheckUpActivity extends AppCompatActivity {
         //TODO: Check if device has 3.5mm jack / headset plug
         testItems.add(new TestItem(
                 "Headset", HEADSET,
-                R.drawable.untested_headset,
-                R.drawable.failed_headset,
-                R.drawable.passed_headset)
+                R.drawable.headset_untested,
+                R.drawable.headset_failed,
+                R.drawable.headset_passed)
         );
     }
 
@@ -201,9 +210,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if (checkGPSHardware()) {
             testItems.add(new TestItem(
                     "GPS", GPS,
-                    R.drawable.untested_gps,
-                    R.drawable.failed_gps,
-                    R.drawable.passed_gps)
+                    R.drawable.gps_untested,
+                    R.drawable.gps_failed,
+                    R.drawable.gps_passed)
             );
         }
     }
@@ -211,18 +220,18 @@ public class CheckUpActivity extends AppCompatActivity {
     private void addTouchscreenTest() {
         testItems.add(new TestItem(
                 "Touchscreen", TOUCHSCREEN,
-                R.drawable.untested_touchscreen,
-                R.drawable.failed_touchscreen,
-                R.drawable.passed_touchscreen)
+                R.drawable.touchscreen_untested,
+                R.drawable.touchscreen_failed,
+                R.drawable.touchscreen_passed)
         );
     }
 
     private void addLCDTest() {
         testItems.add(new TestItem(
                 "LCD", LCD,
-                R.drawable.untested_lcd,
-                R.drawable.failed_lcd,
-                R.drawable.passed_lcd)
+                R.drawable.lcd_untested,
+                R.drawable.lcd_failed,
+                R.drawable.lcd_passed)
         );
     }
 
@@ -230,9 +239,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if(checkFlashLightHardware()) {
             testItems.add(new TestItem(
                     "Zaklamp", FLASH,
-                    R.drawable.untested_flashlight,
-                    R.drawable.failed_flashlight,
-                    R.drawable.passed_flashlight)
+                    R.drawable.flash_untested,
+                    R.drawable.flash_failed,
+                    R.drawable.flash_passed)
             );
         }
     }
@@ -241,36 +250,45 @@ public class CheckUpActivity extends AppCompatActivity {
         if (checkCompassHardware())
             testItems.add(new TestItem(
                     "Compas", COMPASS,
-                    R.drawable.untested_compass,
-                    R.drawable.failed_compas,
-                    R.drawable.passed_compas)
+                    R.drawable.compass_untested,
+                    R.drawable.compass_failed,
+                    R.drawable.compass_passed)
             );
     }
 
     private void addChargerTest() {
         testItems.add(new TestItem(
                 "Oplader", CHARGER,
-                R.drawable.untested_charger,
-                R.drawable.failed_charger,
-                R.drawable.passed_charger)
+                R.drawable.charger_untested,
+                R.drawable.charger_failed,
+                R.drawable.charger_passed)
+        );
+    }
+
+    private void addAccuTest() {
+        testItems.add(new TestItem(
+                "Accu", ACCU,
+                R.drawable.accu_untested,
+                R.drawable.accu_failed,
+                R.drawable.accu_passed)
         );
     }
 
     private void addPowerButtonTest() {
         testItems.add(new TestItem(
                 "Aan/uit knop", ON_OFF_BUTTON,
-                R.drawable.untested_onoffbutton,
-                R.drawable.failed_onoffbutton,
-                R.drawable.passed_onoffbutton)
+                R.drawable.power_untested,
+                R.drawable.power_failed,
+                R.drawable.power_passed)
         );
     }
 
     private void addHomeButtonTest() {
         testItems.add(new TestItem(
                 "Home knop", HOME_BUTTON,
-                R.drawable.untested_homebutton,
-                R.drawable.failed_homebutton,
-                R.drawable.passed_homebutton)
+                R.drawable.home_untested,
+                R.drawable.home_failed,
+                R.drawable.home_passed)
         );
     }
 
@@ -283,18 +301,18 @@ public class CheckUpActivity extends AppCompatActivity {
         //TODO: Check if device has alert slider
         testItems.add(new TestItem(
                 "Volume knoppen", VOLUME_CONTROLS,
-                R.drawable.untested_volume,
-                R.drawable.failed_volume,
-                R.drawable.passed_volume)
+                R.drawable.volume_untested,
+                R.drawable.volume_failed,
+                R.drawable.volume_passed)
         );
     }
 
     private void addSpeakerTest() {
         testItems.add(new TestItem(
                 "Speaker", SPEAKER,
-                R.drawable.untested_speaker,
-                R.drawable.failed_speaker,
-                R.drawable.passed_speaker)
+                R.drawable.speaker_untested,
+                R.drawable.speaker_failed,
+                R.drawable.speaker_passed)
         );
     }
 
@@ -302,9 +320,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if(!getResources().getBoolean(R.bool.isTab)) {
             testItems.add(new TestItem(
                     "Bel speaker", CALL_SPEAKER,
-                    R.drawable.untested_callspeaker,
-                    R.drawable.failed_callspeaker,
-                    R.drawable.passed_callspeaker)
+                    R.drawable.callspeaker_untested,
+                    R.drawable.callspeaker_failed,
+                    R.drawable.callspeaker_passed)
             );
         }
     }
@@ -312,9 +330,9 @@ public class CheckUpActivity extends AppCompatActivity {
     private void addVibratorTest() {
         testItems.add(new TestItem(
                 "Vibrator", VIBRATOR,
-                R.drawable.untested_vibrator,
-                R.drawable.failed_vibrator,
-                R.drawable.passed_vibrator)
+                R.drawable.vibrate_untested,
+                R.drawable.vibrate_failed,
+                R.drawable.vibrate_passed)
         );
     }
 
@@ -322,18 +340,18 @@ public class CheckUpActivity extends AppCompatActivity {
         //TODO: Check if device has multiple microphones
         testItems.add(new TestItem(
                 "Microfoon", MICROPHONE,
-                R.drawable.untested_microphone,
-                R.drawable.failed_microphone,
-                R.drawable.passed_microphone)
+                R.drawable.microphone_untested,
+                R.drawable.microphone_failed,
+                R.drawable.microphone_passed)
         );
     }
 
     private void addMultiTouchTest() {
         testItems.add(new TestItem(
                 "Multitouch", MULTITOUCH,
-                R.drawable.untested_multitouch,
-                R.drawable.failed_multitouch,
-                R.drawable.passed_multitouch)
+                R.drawable.multitouch_untested,
+                R.drawable.multitouch_failed,
+                R.drawable.multitouch_passed)
         );
     }
 
@@ -341,9 +359,9 @@ public class CheckUpActivity extends AppCompatActivity {
         //TODO: Check if device has Gyroscope
         testItems.add(new TestItem(
                 "Gyroscoop", GYROSCOPE,
-                R.drawable.untested_gyroscoop,
-                R.drawable.failed_gyroscoop,
-                R.drawable.passed_gyroscoop)
+                R.drawable.gyroscope_untested,
+                R.drawable.gyroscope_failed,
+                R.drawable.gyroscope_passed)
         );
     }
 
@@ -351,9 +369,9 @@ public class CheckUpActivity extends AppCompatActivity {
         //TODO: Check if device has accelerometer
         testItems.add(new TestItem(
                 "Accelerometer", ACCELEROMETER,
-                R.drawable.untested_accelerometer,
-                R.drawable.failed_accelerometer,
-                R.drawable.passed_accelerometer)
+                R.drawable.accelerometer_untested,
+                R.drawable.accelerometer_failed,
+                R.drawable.accelerometer_passed)
         );
     }
 
@@ -361,9 +379,9 @@ public class CheckUpActivity extends AppCompatActivity {
         //TODO: Check if device has wifi
         testItems.add(new TestItem(
                 "WiFi", WIFI,
-                R.drawable.untested_wifi,
-                R.drawable.failed_wifi,
-                R.drawable.passed_wifi)
+                R.drawable.wifi_untested,
+                R.drawable.wifi_failed,
+                R.drawable.wifi_passed)
         );
     }
 
@@ -371,9 +389,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if (checkNFCHardware()) {
             testItems.add(new TestItem(
                     "NFC", NFC,
-                    R.drawable.untested_nfc,
-                    R.drawable.failed_nfc,
-                    R.drawable.passed_nfc)
+                    R.drawable.nfc_untested,
+                    R.drawable.nfc_failed,
+                    R.drawable.nfc_passed)
             );
         }
     }
@@ -473,9 +491,9 @@ public class CheckUpActivity extends AppCompatActivity {
                 if (fingerprintManager.isHardwareDetected()) {
                     testItems.add(index, new TestItem(
                             "Vingerafdruk scanner", FINGERPRINT,
-                            R.drawable.untested_fingerprint,
-                            R.drawable.failed_fingerprint,
-                            R.drawable.passed_fingerprint)
+                            R.drawable.fingerprint_untested,
+                            R.drawable.fingerprint_failed,
+                            R.drawable.fingerprint_passed)
                     );
                     testItemAdapter.notifyDataSetChanged();
                 }
@@ -521,6 +539,11 @@ public class CheckUpActivity extends AppCompatActivity {
     private void startChargerTest() {
         Intent powerIntent = new Intent(CheckUpActivity.this, ChargerTestActivity.class);
         startActivityForResult(powerIntent, CHARGER);
+    }
+
+    private void startAccuTest() {
+        Intent accuIntent = new Intent(CheckUpActivity.this, AccuTestActivity.class);
+        startActivityForResult(accuIntent, ACCU);
     }
 
     private void startOnOffButtonTest() {
@@ -625,6 +648,7 @@ public class CheckUpActivity extends AppCompatActivity {
                 case FLASH:             handleFlashResult(requestCode, data);           break;
                 case COMPASS:           handleCompassResult(requestCode, data);         break;
                 case CHARGER:           handleChargerResult(requestCode, data);         break;
+                case ACCU:              handleAccuResult(requestCode, data);            break;
                 case ON_OFF_BUTTON:     handleOnOffButtonResult(requestCode, data);     break;
                 case HOME_BUTTON:       handleHomeButtonResult(requestCode, data);      break;
                 case FINGERPRINT:       handleFingerprintResult(requestCode, data);     break;
@@ -759,6 +783,18 @@ public class CheckUpActivity extends AppCompatActivity {
                 if (testItem.getRequestCode() == requestCode) {
                     boolean chargerIsWorking = data.getBooleanExtra("chargerIsWorking", false);
                     testItem.setTestResult(chargerIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    private void handleAccuResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean accuDetailsAreWorking = data.getBooleanExtra("accuDetailsAreWorking", false);
+                    testItem.setTestResult(accuDetailsAreWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }

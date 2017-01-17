@@ -51,6 +51,8 @@
     <string name="question_test_charger">"Is de kabel ingeplugd maar niet herkend?"</string>
     <string name="result_test_charger">"Een ingeplugde USB-kabel is herkend."</string>
 
+    <!-- Accu -->
+
     <!-- Compass -->
     <string name="compass">Compas</string>
     <string name="test_info_compass">Draai het device zodat het hele cirkel getekend is</string>
@@ -62,7 +64,7 @@
     <string name="info_test_lcd">Klik elke kleur aan om te zoeken naar dode pixels</string>
     <string name="question_test_lcd">Alle kleuren zijn correct weergegeven</string>
 
-    <!-- Flashligt -->
+    <!-- Flashlight -->
     <string name="flashlight">Zaklamp</string>
     <string name="info_test_flashlight">Zaklamp test</string>
     <string name="info_question_flashlight">Druk om de zaklamp te starten</string>
@@ -133,5 +135,8 @@
 
     <!-- Other extracted strings -->
     <string name="others">TODO: Remove this one!</string>
+    <string name="accu">Accu</string>
+    <string name="info_test_accu">Informatie over de accu:</string>
+    <string name="question_test_accu">Heeft u goede waardes ontvangen?</string>
 
 </resources>

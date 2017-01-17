@@ -126,6 +126,16 @@
         </activity>
 
         <activity
+            android:name=".activitytest.AccuTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <activity
             android:name=".activitytest.ColorTestActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
