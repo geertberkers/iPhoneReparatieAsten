@@ -29,6 +29,7 @@ import geert.berkers.iphonereparatieasten.activitytest.HomeButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.OnOffButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.VibratorTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.VolumeControlsTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.WiFiTestActivity;
 import geert.berkers.iphonereparatieasten.adapter.TestItemAdapter;
@@ -169,13 +170,14 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void addGPSTest() {
-        //TODO: Check if device has GPS
-        testItems.add(new TestItem(
-                "GPS", GPS,
-                R.drawable.untested_gps,
-                R.drawable.failed_gps,
-                R.drawable.passed_gps)
-        );
+        if(checkGPSHardware()) {
+            testItems.add(new TestItem(
+                    "GPS", GPS,
+                    R.drawable.untested_gps,
+                    R.drawable.failed_gps,
+                    R.drawable.passed_gps)
+            );
+        }
     }
 
     private void addTouchscreenTest() {
@@ -225,7 +227,6 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void addHomeButtonTest() {
-        //TODO: Check if device has Home button
         testItems.add(new TestItem(
                 "Home knop", HOME_BUTTON,
                 R.drawable.untested_homebutton,
@@ -235,7 +236,7 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void addVolumeButtonsTest() {
-        //TODO: Check if device has volume buttons / alert slider
+        //TODO: Check if device has alert slider
         testItems.add(new TestItem(
                 "Volume knoppen", VOLUME_CONTROLS,
                 R.drawable.untested_volume,
@@ -312,6 +313,9 @@ public class CheckUpActivity extends AppCompatActivity {
         );
     }
 
+    //TODO: Test NotficationLED
+    //TODO: Test FingerprintScanner
+
     // endregion
 
     public void resetTestResults(View view) {
@@ -327,6 +331,15 @@ public class CheckUpActivity extends AppCompatActivity {
      */
     private boolean checkCameraHardware() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    /**
+     * Check if this device has GPS
+     *
+     * @return true if it has a GPS false if it doesn't
+     */
+    private boolean checkGPSHardware() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
     }
 
     /**
@@ -398,11 +411,11 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void startSpeakerTest() {
-
     }
 
     private void startVibratorTest() {
-
+        Intent powerIntent = new Intent(CheckUpActivity.this, VibratorTestActivity.class);
+        startActivityForResult(powerIntent, VIBRATOR);
     }
 
     private void startMicrophoneTest() {
@@ -638,6 +651,15 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void handleVibratorResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean vibratorIsWorking = data.getBooleanExtra("vibratorIsWorking", false);
+                    testItem.setTestResult(vibratorIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     private void handleMicrophoneResult(int requestCode, Intent data) {

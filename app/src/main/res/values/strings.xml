@@ -67,6 +67,14 @@
     <string name="question_test_volume">Het drukken op de volume knop is niet gedetecteerd</string>
     <string name="question_test_alertslider">Verandering van de alert slider is niet gedetecteerd</string>
 
+    <!-- Speaker -->
+
+    <!-- Vibration Test -->
+    <string name="info_test_vibrator">Druk op de knop om de vibrator te starten</string>
+    <string name="question_test_vibrator_test">Start vibrator</string>
+    <string name="info_test_vibrating">Aan het vibreren</string>
+    <string name="question_test_vibator">Werkt de vibrator?</string>
+
     <!-- WiFi -->
     <string name="network">Netwerk</string>
     <string name="ip_address">IP-Address</string>
