@@ -28,10 +28,12 @@ import java.util.List;
 
 import geert.berkers.iphonereparatieasten.Information;
 import geert.berkers.iphonereparatieasten.R;
+import geert.berkers.iphonereparatieasten.activitytest.CallSpeakerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.CameraTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.CompassTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.FingerprintTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.FlashTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HomeButtonTestActivity;
@@ -58,19 +60,21 @@ public class CheckUpActivity extends AppCompatActivity {
     private final static int GPS = 3;
     private final static int TOUCHSCREEN = 4;
     private final static int LCD = 5;
-    private final static int COMPASS = 6;
-    private final static int CHARGER = 7;
-    private final static int ON_OFF_BUTTON = 8;
-    private final static int HOME_BUTTON = 9;
-    private final static int FINGERPRINT = 10;
-    private final static int VOLUME_CONTROLS = 11;
-    private final static int SPEAKER = 12;
-    private final static int VIBRATOR = 13;
-    private final static int MICROPHONE = 14;
-    private final static int MULTITOUCH = 15;
-    private final static int GYROSCOPE = 16;
-    private final static int ACCELEROMETER = 17;
-    private final static int WIFI = 18;
+    private final static int FLASH = 6;
+    private final static int COMPASS = 7;
+    private final static int CHARGER = 8;
+    private final static int ON_OFF_BUTTON = 9;
+    private final static int HOME_BUTTON = 10;
+    private final static int FINGERPRINT = 11;
+    private final static int VOLUME_CONTROLS = 12;
+    private final static int SPEAKER = 13;
+    private final static int CALL_SPEAKER = 14;
+    private final static int VIBRATOR = 15;
+    private final static int MICROPHONE = 16;
+    private final static int MULTITOUCH = 17;
+    private final static int GYROSCOPE = 18;
+    private final static int ACCELEROMETER = 19;
+    private final static int WIFI = 20;
     private static final int FINGERPRINT_REQUEST_CODE = 999;
 
     private int index;
@@ -120,6 +124,7 @@ public class CheckUpActivity extends AppCompatActivity {
                             case GPS:               startGPSTest();             break;
                             case TOUCHSCREEN:       startTouchscreenTest();     break;
                             case LCD:               startLCDTest();             break;
+                            case FLASH:             startFlashTest();           break;
                             case COMPASS:           startCompassTest();         break;
                             case CHARGER:           startChargerTest();         break;
                             case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
@@ -127,6 +132,7 @@ public class CheckUpActivity extends AppCompatActivity {
                             case FINGERPRINT:       startFingerPrintTest();     break;
                             case VOLUME_CONTROLS:   startVolumeControlsTest();  break;
                             case SPEAKER:           startSpeakerTest();         break;
+                            case CALL_SPEAKER:      startCallSpeakerTest();     break;
                             case VIBRATOR:          startVibratorTest();        break;
                             case MICROPHONE:        startMicrophoneTest();      break;
                             case MULTITOUCH:        startMultiTouchTest();      break;
@@ -149,6 +155,7 @@ public class CheckUpActivity extends AppCompatActivity {
         addGPSTest();
         addTouchscreenTest();
         addLCDTest();
+        addFlashTest();
         addCompassTest();
         addChargerTest();
         addPowerButtonTest();
@@ -156,6 +163,7 @@ public class CheckUpActivity extends AppCompatActivity {
         addFingerPrintTest();
         addVolumeButtonsTest();
         addSpeakerTest();
+        addCallSpeakerTest();
         addVibratorTest();
         addMicrophoneTest();
         addMultiTouchTest();
@@ -214,6 +222,17 @@ public class CheckUpActivity extends AppCompatActivity {
         );
     }
 
+    private void addFlashTest() {
+        if(checkFlashLightHardware()) {
+            testItems.add(new TestItem(
+                    "Zaklamp", FLASH,
+                    R.drawable.untested_charger,
+                    R.drawable.failed_charger,
+                    R.drawable.passed_charger)
+            );
+        }
+    }
+
     private void addCompassTest() {
         if (checkCompassHardware())
             testItems.add(new TestItem(
@@ -267,13 +286,23 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void addSpeakerTest() {
-        //TODO: Check if device has multiple speakers
         testItems.add(new TestItem(
                 "Speaker", SPEAKER,
                 R.drawable.untested_speaker,
                 R.drawable.failed_speaker,
                 R.drawable.passed_speaker)
         );
+    }
+
+    private void addCallSpeakerTest() {
+        if(!getResources().getBoolean(R.bool.isTab)) {
+            testItems.add(new TestItem(
+                    "Bel speaker", CALL_SPEAKER,
+                    R.drawable.untested_speaker,
+                    R.drawable.failed_speaker,
+                    R.drawable.passed_speaker)
+            );
+        }
     }
 
     private void addVibratorTest() {
@@ -352,6 +381,15 @@ public class CheckUpActivity extends AppCompatActivity {
      */
     private boolean checkCameraHardware() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    /**
+     * Check if this device has a flashlight
+     *
+     * @return true if it has a flashlight false if it doesn't
+     */
+    private boolean checkFlashLightHardware() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
     /**
@@ -445,6 +483,11 @@ public class CheckUpActivity extends AppCompatActivity {
         startActivityForResult(lcdIntent, LCD);
     }
 
+    private void startFlashTest() {
+        Intent flashIntent = new Intent(CheckUpActivity.this, FlashTestActivity.class);
+        startActivityForResult(flashIntent, FLASH);
+    }
+
     private void startCompassTest() {
         Intent powerIntent = new Intent(CheckUpActivity.this, CompassTestActivity.class);
         startActivityForResult(powerIntent, COMPASS);
@@ -476,6 +519,13 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void startSpeakerTest() {
+        Intent fingerprintIntent = new Intent(CheckUpActivity.this, SpeakerTestActivity.class);
+        startActivityForResult(fingerprintIntent, SPEAKER);
+    }
+
+    private void startCallSpeakerTest() {
+        Intent fingerprintIntent = new Intent(CheckUpActivity.this, CallSpeakerTestActivity.class);
+        startActivityForResult(fingerprintIntent, CALL_SPEAKER);
     }
 
     private void startVibratorTest() {
@@ -543,6 +593,7 @@ public class CheckUpActivity extends AppCompatActivity {
                 case GPS:               handleGPSResult(requestCode, data);             break;
                 case TOUCHSCREEN:       handleTouchscreenResult(requestCode, data);     break;
                 case LCD:               handleLCDResult(requestCode, data);             break;
+                case FLASH:             handleFlashResult(requestCode, data);           break;
                 case COMPASS:           handleCompassResult(requestCode, data);         break;
                 case CHARGER:           handleChargerResult(requestCode, data);         break;
                 case ON_OFF_BUTTON:     handleOnOffButtonResult(requestCode, data);     break;
@@ -550,6 +601,7 @@ public class CheckUpActivity extends AppCompatActivity {
                 case FINGERPRINT:       handleFingerprintResult(requestCode, data);     break;
                 case VOLUME_CONTROLS:   handleVolumeControlsResult(requestCode, data);  break;
                 case SPEAKER:           handleSpeakerResult(requestCode, data);         break;
+                case CALL_SPEAKER:      handleCallSpeakerResult(requestCode, data);     break;
                 case VIBRATOR:          handleVibratorResult(requestCode, data);        break;
                 case MICROPHONE:        handleMicrophoneResult(requestCode, data);      break;
                 case MULTITOUCH:        handleMultitouchResult(requestCode, data);      break;
@@ -639,8 +691,20 @@ public class CheckUpActivity extends AppCompatActivity {
         if (data != null) {
             for (TestItem testItem : testItems) {
                 if (testItem.getRequestCode() == requestCode) {
-                    boolean headsetIsWorking = data.getBooleanExtra("lcdIsWorking", false);
-                    testItem.setTestResult(headsetIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    boolean lcdIsWorking = data.getBooleanExtra("lcdIsWorking", false);
+                    testItem.setTestResult(lcdIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    private void handleFlashResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean flashIsWorking = data.getBooleanExtra("flashIsWorking", false);
+                    testItem.setTestResult(flashIsWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }
@@ -726,6 +790,27 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void handleSpeakerResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean speakerIsWorking = data.getBooleanExtra("speakerIsWorking", false);
+                    testItem.setTestResult(speakerIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    private void handleCallSpeakerResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean callSpeakerIsWorking = data.getBooleanExtra("callSpeakerIsWorking", false);
+                    testItem.setTestResult(callSpeakerIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     private void handleVibratorResult(int requestCode, Intent data) {

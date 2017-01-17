@@ -1,7 +1,6 @@
 package geert.berkers.iphonereparatieasten.activitytest;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,6 +37,7 @@ public class CameraTestActivity extends AppCompatActivity {
     private TextView txtQuestion;
 
     private boolean paused;
+    private boolean permission;
 
     private boolean backCameraTested;
     private boolean frontCameraTested;
@@ -51,27 +51,29 @@ public class CameraTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera_test);
 
         initControls();
-        setTitle("Camera");
+        setTitle(getString(R.string.camera));
 
         paused = false;
+        permission = false;
+
         backCameraTested = false;
         frontCameraTested = false;
 
-        if(isAndroidMOrAbove()){
+        if (isAndroidMOrAbove()) {
             askCameraPermission();
-        } else{
+        } else {
             testCamera(BACK);
         }
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
-
-        if(paused) {
+        if (permission && paused) {
             testCamera(backCameraTested ? FRONT : BACK);
             paused = false;
         }
+        super.onResume();
+
     }
 
     private void initControls() {
@@ -95,11 +97,10 @@ public class CameraTestActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("SetTextI18n")
-    private void testCamera(int facing){
+    private void testCamera(int facing) {
         mCamera = openCamera(facing);
 
-        if(facing == BACK) {
+        if (facing == BACK) {
             txtInfo.setText(R.string.info_test_camera_back);
             txtQuestion.setText(R.string.question_test_camera_back);
         } else {
@@ -148,42 +149,39 @@ public class CameraTestActivity extends AppCompatActivity {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION);
         } else {
+            permission = true;
             testCamera(BACK);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case CAMERA_PERMISSION:
-                handleCameraPermission(grantResults);
-                break;
-            default:
-                break;
+        if (requestCode == CAMERA_PERMISSION) {
+            handleCameraPermission(grantResults);
         }
     }
 
     private void handleCameraPermission(int[] grantResults) {
         if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            permission = true;
             testCamera(BACK);
-        }
-        else {
+        } else {
             createCameraAlertDialog().show();
         }
     }
 
     private AlertDialog.Builder createCameraAlertDialog() {
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Camera openen mislukt");
+        alertDialogBuilder.setTitle(R.string.camera_failed);
         alertDialogBuilder.setIcon(android.R.drawable.ic_menu_camera);
-        alertDialogBuilder.setMessage("Geen permissies toegestaan om de camera te openen.");
-        alertDialogBuilder.setPositiveButton("Geef rechten", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setMessage(R.string.no_camera_permission);
+        alertDialogBuilder.setPositiveButton(R.string.give_rights, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 askCameraPermission();
             }
         });
-        alertDialogBuilder.setNegativeButton("Annuleren", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -209,11 +207,11 @@ public class CameraTestActivity extends AppCompatActivity {
     }
 
     private void isNotWorking() {
-        if(!backCameraTested){
+        if (!backCameraTested) {
             backCameraTested = true;
             backCameraIsWorking = false;
             testCamera(FRONT);
-        } else if(!frontCameraTested){
+        } else if (!frontCameraTested) {
             frontCameraTested = true;
             frontCameraIsWorking = false;
             setResult();
@@ -221,18 +219,18 @@ public class CameraTestActivity extends AppCompatActivity {
     }
 
     private void isWorking() {
-        if(!backCameraTested){
+        if (!backCameraTested) {
             backCameraTested = true;
             backCameraIsWorking = true;
             testCamera(FRONT);
-        } else if(!frontCameraTested){
+        } else if (!frontCameraTested) {
             frontCameraTested = true;
             frontCameraIsWorking = true;
             setResult();
         }
     }
 
-    private void setResult(){
+    private void setResult() {
         Intent intentMessage = new Intent();
         intentMessage.putExtra("backCameraIsWorking", backCameraIsWorking);
         intentMessage.putExtra("frontCameraIsWorking", frontCameraIsWorking);

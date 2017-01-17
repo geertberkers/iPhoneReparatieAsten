@@ -37,7 +37,7 @@ public class VibratorTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Vibrator");
+        setTitle(getString(R.string.vibrator));
     }
 
     @Override

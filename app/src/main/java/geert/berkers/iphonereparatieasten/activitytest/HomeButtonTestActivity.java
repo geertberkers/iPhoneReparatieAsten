@@ -16,13 +16,12 @@ import geert.berkers.iphonereparatieasten.R;
 /**
  * Created by Geert.
  */
-
+@SuppressWarnings("FieldCanBeLocal")
 public class HomeButtonTestActivity extends AppCompatActivity {
 
     private boolean homeButtonIsWorking;
 
     private FloatingActionButton fabWorking;
-    @SuppressWarnings("FieldCanBeLocal")
     private FloatingActionButton fabNotWorking;
 
     private HomeButtonReceiver mHomeButtonReceiver;
@@ -33,7 +32,7 @@ public class HomeButtonTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Home knop");
+        setTitle(getString(R.string.home_button));
     }
 
     @Override

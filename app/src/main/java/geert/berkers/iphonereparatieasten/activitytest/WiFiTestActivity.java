@@ -48,7 +48,7 @@ public class WiFiTestActivity extends AppCompatActivity {
 
         //TODO: Check if wifi is on!
         initControls();
-        setTitle("WiFi");
+        setTitle(getString(R.string.wifi));
     }
 
     private void initControls() {

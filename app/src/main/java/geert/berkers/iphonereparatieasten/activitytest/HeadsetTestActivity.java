@@ -85,18 +85,17 @@ public class HeadsetTestActivity extends AppCompatActivity {
     }
 
     private void isNotWorking() {
-        stopPlaying();
         headsetIsWorking = false;
         setResult();
     }
 
     private void isWorking() {
-        stopPlaying();
         headsetIsWorking = true;
         setResult();
     }
 
     private void setResult() {
+        stopPlaying();
         Intent intentMessage = new Intent();
         intentMessage.putExtra("headsetIsWorking", headsetIsWorking);
         setResult(RESULT_OK, intentMessage);

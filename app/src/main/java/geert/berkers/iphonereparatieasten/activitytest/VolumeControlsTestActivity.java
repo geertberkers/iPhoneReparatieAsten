@@ -46,7 +46,7 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Volume knoppen");
+        setTitle(getString(R.string.volume_controls));
         startRingerBroadcastReceiver();
     }
 

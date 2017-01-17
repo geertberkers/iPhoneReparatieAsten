@@ -79,6 +79,7 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
         } else {
             testGPS();
         }
+        setTitle(getString(R.string.gps));
     }
 
     private void askLocationPermission() {
@@ -114,9 +115,6 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
 
     @SuppressWarnings("MissingPermission")
     private void testGPS() {
-        txtInfo.setText(R.string.info_test_gps);
-        txtQuestion.setText(R.string.question_test_gps);
-
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 MIN_TIME_INTERVAL_BETWEEN_UPDATES,
                 MIN_DISTANCE_BETWEEN_UPDATES,
@@ -126,6 +124,9 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
+
+        txtInfo.setText(R.string.info_test_gps);
+        txtQuestion.setText(R.string.question_test_gps);
 
         FloatingActionButton fabNotWorking = (FloatingActionButton) findViewById(R.id.fabNotWorking);
         fabNotWorking.setOnClickListener(new View.OnClickListener() {

@@ -21,13 +21,14 @@ import geert.berkers.iphonereparatieasten.R;
 /**
  * Created by Geert.
  */
-public class SpeakerTestActivity  extends AppCompatActivity {
+@SuppressWarnings("FieldCanBeLocal")
+public class CallSpeakerTestActivity extends AppCompatActivity {
 
     private TextView txtInfo;
     private TextView txtQuestion;
 
-    private boolean speakerIsPlaying;
-    private boolean speakerIsWorking;
+    private boolean callSpeakerIsPlaying;
+    private boolean callSpeakerIsWorking;
 
     private ImageView imageView;
     private MediaPlayer mediaPlayer;
@@ -41,15 +42,15 @@ public class SpeakerTestActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle(getString(R.string.speaker));
+        setTitle(getString(R.string.callspeaker));
     }
 
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
 
-        txtInfo.setText(R.string.info_test_speaker);
-        txtQuestion.setText(R.string.question_test_speaker_play);
+        txtInfo.setText(R.string.info_test_callspeaker);
+        txtQuestion.setText(R.string.play_test_callspeaker);
 
         imageView = new ImageView(this);
         //TODO: Add speaker image
@@ -74,40 +75,40 @@ public class SpeakerTestActivity  extends AppCompatActivity {
             }
         });
 
-        speakerIsPlaying = false;
+        callSpeakerIsPlaying = false;
         fabNotWorking.setVisibility(View.GONE);
     }
 
     private void isNotWorking() {
-        speakerIsWorking = false;
+        callSpeakerIsWorking = false;
         setResult();
     }
 
     private void isWorking() {
-        if (!speakerIsPlaying) {
+        if (!callSpeakerIsPlaying) {
             startPlayingSound();
-            txtQuestion.setText(R.string.question_test_speaker);
+            txtQuestion.setText(R.string.question_test_callspeaker);
             fabNotWorking.setVisibility(View.VISIBLE);
         } else {
-            speakerIsWorking = true;
+            callSpeakerIsWorking = true;
             setResult();
         }
     }
 
     private void startPlayingSound() {
         stopPlaying();
-        speakerIsPlaying = true;
+        callSpeakerIsPlaying = true;
         //TODO: Add speaker image animation
 
         mediaPlayer = MediaPlayer.create(this, R.raw.nova);
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
 
         AudioManager audioManager= (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setMode(AudioManager.MODE_NORMAL);
-        audioManager.setSpeakerphoneOn(true);
+        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        audioManager.setSpeakerphoneOn(false);
         audioManager.setStreamVolume(
-                AudioManager.MODE_NORMAL,
-                audioManager.getStreamMaxVolume(AudioManager.MODE_NORMAL),
+                AudioManager.MODE_IN_COMMUNICATION,
+                audioManager.getStreamMaxVolume(AudioManager.MODE_IN_COMMUNICATION),
                 0
         );
         Resources res = getResources();
@@ -127,7 +128,7 @@ public class SpeakerTestActivity  extends AppCompatActivity {
     private void setResult(){
         stopPlaying();
         Intent intentMessage = new Intent();
-        intentMessage.putExtra("speakerIsWorking", speakerIsWorking);
+        intentMessage.putExtra("callSpeakerIsWorking", callSpeakerIsWorking);
         setResult(RESULT_OK, intentMessage);
         finish();
     }

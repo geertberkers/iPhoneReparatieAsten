@@ -49,7 +49,7 @@ public class TouchscreenTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_touchscreen_test);
         initControls();
 
-        setTitle("Touchscreen");
+        setTitle(getString(R.string.touchscreen));
     }
 
     private int getActionBarHeight() {

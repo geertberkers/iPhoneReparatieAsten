@@ -2,18 +2,22 @@
 <manifest package="geert.berkers.iphonereparatieasten"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
     <uses-feature android:name="android.hardware.location.gps"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
 
     <!-- Needed for Android 5.0 (API 21+) -->
@@ -141,6 +145,16 @@
         </activity>
 
         <activity
+            android:name=".activitytest.FlashTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <activity
             android:name=".activitytest.CompassTestActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -182,6 +196,26 @@
 
         <activity
             android:name=".activitytest.VolumeControlsTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <activity
+            android:name=".activitytest.SpeakerTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <activity
+            android:name=".activitytest.CallSpeakerTestActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">

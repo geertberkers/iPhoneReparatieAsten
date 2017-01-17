@@ -47,6 +47,7 @@ public class CompassTestActivity extends AppCompatActivity implements SensorEven
         setContentView(R.layout.activity_test);
 
         initControls();
+        setTitle(getString(R.string.compass));
     }
 
     private void initControls() {
@@ -91,7 +92,6 @@ public class CompassTestActivity extends AppCompatActivity implements SensorEven
         fabWorking.setVisibility(View.GONE);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
-
 
     private void isNotWorking() {
         compassIsWorking = false;

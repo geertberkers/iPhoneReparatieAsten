@@ -31,7 +31,7 @@ public class LCDTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lcd_test);
 
         initControls();
-        setTitle("LCD");
+        setTitle(getString(R.string.lcd));
     }
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);

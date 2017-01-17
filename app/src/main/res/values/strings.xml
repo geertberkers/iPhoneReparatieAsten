@@ -9,22 +9,28 @@
     <string name="cancel">Annuleren</string>
     <string name="give_rights">Geef rechten</string>
     <string name="call_failed">Bellen mislukt</string>
+    <string name="camera_failed">Camera openen mislukt</string>
+    <string name="flashlight_failed">"Zaklamp aanzetten mislukt"</string>
     <string name="no_call_permission">Geen permissies toegestaan om te bellen.</string>
+    <string name="no_camera_permission">Geen permissies toegestaan om de camera te gebruiken.</string>
     <string name="no_location_permission">Geen permissies toegestaan om de locatie op te vragen.</string>
+    <string name="no_flashlight_permission">Geef de camera permissies om gebruik te maken van de zaklamp.</string>
 
-    <!-- Camera testName-->
+    <!-- Camera -->
+    <string name="camera">Camera</string>
     <string name="info_test_camera_back">Test back camera</string>
     <string name="info_test_camera_front">Test front camera</string>
     <string name="question_test_camera_back">Zie je het beeld van de camera?</string>
     <string name="question_test_camera_front">Zie je het beeld van de front-camera?</string>
 
-    <!-- Headset testName-->
+    <!-- Headset -->
     <string name="info_test_headset">Plug een headset in.</string>
     <string name="info_test_headset_play_sound">Er wordt een geluid afgespeeld</string>
     <string name="question_test_headset">Is de headset ingeplugd maar niet herkend?</string>
     <string name="question_test_headset_hear_sound">Hoort u geluid door uw headset?</string>
 
-    <!-- GPS testName-->
+    <!-- GPS -->
+    <string name="gps">GPS</string>
     <string name="info_test_gps">Wachten op GPS signaal.\nHeb even geduld aub.</string>
     <string name="question_test_gps">Klik op X als u na een minuut geen GPS hebt ontvangen.</string>
     <string name="info_test_gps_received">Locatie ontvangen:</string>
@@ -34,33 +40,57 @@
     <string name="location_failed">Locatie ophalen mislukt</string>
 
     <!-- Touchscreen-->
+    <string name="touchscreen">Touchscreen</string>
     <string name="info_test_touschreen">Raak alle blokken aan!</string>
     <string name="question_test_touchscreen">Het lukt niet om alle bokken aan te raken</string>
     <string name="result_test_touchscreen">Alle blokken aangeraakt!</string>
 
     <!-- Charger -->
+    <string name="charger">Oplader</string>
     <string name="info_test_charger">Plug een USB-kabel in. (Die van stroom voorzien is)</string>
     <string name="question_test_charger">"Is de kabel ingeplugd maar niet herkend?"</string>
     <string name="result_test_charger">"Een ingeplugde USB-kabel is herkend."</string>
 
     <!-- Compass -->
+    <string name="compass">Compas</string>
     <string name="test_info_compass">Draai het device zodat het hele cirkel getekend is</string>
     <string name="test_question_compass">Kun je de hele cirkel getekend krijgen?</string>
     <string name="result_test_compass">Compas check compleet!</string>
 
     <!-- LCD -->
+    <string name="lcd">LCD</string>
     <string name="info_test_lcd">Klik elke kleur aan om te zoeken naar dode pixels</string>
     <string name="question_test_lcd">Alle kleuren zijn correct weergegeven</string>
 
+    <!-- Flashligt -->
+    <string name="flashlight">Zaklamp</string>
+    <string name="info_test_flashlight">Zaklamp test</string>
+    <string name="info_question_flashlight">Druk om de zaklamp te starten</string>
+    <string name="question_test_flashlight">Werkt de zaklamp?</string>
+
     <!-- Power Button -->
+    <string name="power_button">Aan/uit knop</string>
     <string name="info_test_powerbutton">Klik 2x op de power knop</string>
     <string name="question_test_powerbutton">Is het scherm uit en aan gegaan?</string>
 
     <!-- Home Button -->
+    <string name="home_button">Home knop</string>
     <string name="info_test_homebutton">Druk op de homeknop en open de app opnieuw!</string>
     <string name="question_test_homebutton">Werkt de homeknop?</string>
 
-    <!-- Volume Button -->
+    <!-- Fingerprint Scanner -->
+    <string name="fingerprint_scanner">Vingerafdruk scanner</string>
+    <string name="info_test_fingerprint">Gebruik de vingerafdruk scanner</string>
+    <string name="info_question_test_fingerprint">Gebruik een niet toegevoegde vinger!</string>
+    <string name="no_lockscreen">Geen schermbeveiliging ingesteld.</string>
+    <string name="no_permission_fingerprint">Vingerafdruk scanner heeft geen permissie.</string>
+    <string name="no_fingerprints">Geen vingerafdrukken ingesteld</string>
+    <string name="info_first_question_test_fingerprint">Gebruik nu een ingestelde vinger</string>
+    <string name="toast_working_finger">Deze vinger werkt.\nGebruik een andere vinger!</string>
+    <string name="result_test_fingerprint">Vinger gedetecteerd!</string>
+
+    <!-- Volume Buttons -->
+    <string name="volume_controls">Volume knoppen</string>
     <string name="info_test_volume">Verander de positie van de alert slider</string>
     <string name="info_test_volume_up">Druk op de volume omhoog knop</string>
     <string name="info_test_volume_down">Druk op de volume omlaag knop</string>
@@ -68,14 +98,26 @@
     <string name="question_test_alertslider">Verandering van de alert slider is niet gedetecteerd</string>
 
     <!-- Speaker -->
+    <string name="speaker">Speaker</string>
+    <string name="info_test_speaker">Speaker test</string>
+    <string name="question_test_speaker_play">Druk om een geluid af te spelen</string>
+    <string name="question_test_speaker">Hoort u geluid?</string>
+
+    <!-- Call Speaker -->
+    <string name="callspeaker">Bel speaker</string>
+    <string name="info_test_callspeaker">Bel speaker test</string>
+    <string name="play_test_callspeaker">Druk om een geluid af te spelen</string>
+    <string name="question_test_callspeaker">Hoort u geluid?</string>
 
     <!-- Vibration Test -->
+    <string name="vibrator">Vibrator</string>
     <string name="info_test_vibrator">Druk op de knop om de vibrator te starten</string>
     <string name="question_test_vibrator_test">Start vibrator</string>
     <string name="info_test_vibrating">Aan het vibreren</string>
     <string name="question_test_vibator">Werkt de vibrator?</string>
 
     <!-- WiFi -->
+    <string name="wifi">WiFi</string>
     <string name="network">Netwerk</string>
     <string name="ip_address">IP-Address</string>
     <string name="bssid">BSSID</string>
@@ -87,7 +129,7 @@
     <!-- Other extracted strings -->
     <string name="reset">Reset test resultaten</string>
     <string name="reset_test_results">Reset resultaten?</string>
-    <string name="confirmation">Weet u zeker dat u alle testName resultaten wilt verwijderen?</string>
+    <string name="confirmation">Weet u zeker dat u alle resultaten wilt verwijderen?</string>
 
     <!-- Other extracted strings -->
     <string name="others">TODO: Remove this one!</string>

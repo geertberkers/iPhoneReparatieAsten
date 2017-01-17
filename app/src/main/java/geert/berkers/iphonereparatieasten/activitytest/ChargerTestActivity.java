@@ -1,6 +1,5 @@
 package geert.berkers.iphonereparatieasten.activitytest;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -40,7 +39,7 @@ public class ChargerTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Oplader");
+        setTitle(getString(R.string.charger));
 
         startPowerBroadcastReceiver();
     }
@@ -58,7 +57,6 @@ public class ChargerTestActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    @SuppressLint("SetTextI18n")
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
@@ -125,7 +123,6 @@ public class ChargerTestActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void handlePowerPluggedIn() {
         txtQuestion.setText(R.string.result_test_charger);
         fabWorking.setVisibility(View.VISIBLE);
@@ -133,7 +130,6 @@ public class ChargerTestActivity extends AppCompatActivity {
         imageView.setImageResource(R.drawable.charger_plugged);
     }
 
-    @SuppressLint("SetTextI18n")
     private void handleNoPowerPluggedIn() {
         txtQuestion.setText(R.string.question_test_charger);
         fabWorking.setVisibility(View.GONE);

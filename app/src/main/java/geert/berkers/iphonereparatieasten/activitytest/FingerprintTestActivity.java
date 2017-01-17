@@ -42,6 +42,7 @@ import geert.berkers.iphonereparatieasten.R;
 /**
  * Created by Geert.
  */
+@SuppressWarnings("FieldCanBeLocal")
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class FingerprintTestActivity extends AppCompatActivity {
 
@@ -66,15 +67,17 @@ public class FingerprintTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
         initControls();
+        setTitle(getString(R.string.fingerprint_scanner));
     }
 
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
 
-        txtInfo.setText("Gebruik de vingerafdruk scanner");
-        txtQuestion.setText("Gebruik een niet toegevoegde vinger!");
+        txtInfo.setText(R.string.info_test_fingerprint);
+        txtQuestion.setText(R.string.info_question_test_fingerprint);
 
         ImageView imageView = new ImageView(this);
         imageView.setPadding(100, 100, 100, 100);
@@ -112,17 +115,17 @@ public class FingerprintTestActivity extends AppCompatActivity {
         fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
 
         if (!keyguardManager.isKeyguardSecure()) {
-            txtQuestion.setText("Geen schermbeveiliging ingesteld.");
+            txtQuestion.setText(R.string.no_lockscreen);
             return;
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-            txtQuestion.setText("Vingerafdruk scanner heeft geen permissie.");
+            txtQuestion.setText(R.string.no_permission_fingerprint);
             return;
         }
 
         if (!fingerprintManager.hasEnrolledFingerprints()) {
-            txtQuestion.setText("Geen vingerafdrukken ingesteld");
+            txtQuestion.setText(R.string.no_fingerprints);
             return;
         }
 
@@ -204,18 +207,19 @@ public class FingerprintTestActivity extends AppCompatActivity {
 
     public void setAuthenticationFailed() {
         incorrectFingerTested = true;
-        txtQuestion.setText("Gebruik nu een ingestelde vinger");
+        txtQuestion.setText(R.string.info_first_question_test_fingerprint);
     }
 
     public void setAuthenticationSucceeded() {
 
         if (!incorrectFingerTested) {
+            Toast.makeText(this, R.string.toast_working_finger, Toast.LENGTH_SHORT).show();
             initFingerprintManager();
         } else {
             fingerprintIsWorking = true;
             fabWorking.setVisibility(View.VISIBLE);
             fabNotWorking.setVisibility(View.GONE);
-            txtQuestion.setText("Vinger gedetecteerd!");
+            txtQuestion.setText(R.string.result_test_fingerprint);
         }
     }
 }

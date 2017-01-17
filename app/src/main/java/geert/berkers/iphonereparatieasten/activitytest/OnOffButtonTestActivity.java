@@ -17,13 +17,12 @@ import geert.berkers.iphonereparatieasten.receivers.ScreenReceiver;
 /**
  * Created by Geert.
  */
-
+@SuppressWarnings("FieldCanBeLocal")
 public class OnOffButtonTestActivity extends AppCompatActivity {
 
     private boolean onOffButtonIsWorking;
 
     private FloatingActionButton fabWorking;
-    @SuppressWarnings("FieldCanBeLocal")
     private FloatingActionButton fabNotWorking;
 
     private ScreenReceiver screenBroadcastReceiver;
@@ -34,7 +33,7 @@ public class OnOffButtonTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test);
 
         initControls();
-        setTitle("Volume knoppen");
+        setTitle(getString(R.string.power_button));
         startRingerBroadcastReceiver();
     }
 
