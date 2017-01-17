@@ -62,7 +62,7 @@ public class CompassTestActivity extends AppCompatActivity implements SensorEven
 
 
         ImageView background = new ImageView(this);
-        background.setImageResource(R.drawable.compass_background_trans);
+        background.setImageResource(R.drawable.compass_background);
 
         image = new ImageView(this);
         image.setImageResource(R.drawable.compass_ball);

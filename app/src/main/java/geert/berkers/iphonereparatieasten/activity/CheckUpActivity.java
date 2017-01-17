@@ -75,6 +75,8 @@ public class CheckUpActivity extends AppCompatActivity {
     private final static int GYROSCOPE = 18;
     private final static int ACCELEROMETER = 19;
     private final static int WIFI = 20;
+    private final static int NFC = 21;
+
     private static final int FINGERPRINT_REQUEST_CODE = 999;
 
     private int index;
@@ -139,6 +141,7 @@ public class CheckUpActivity extends AppCompatActivity {
                             case GYROSCOPE:         startGyroscopeTest();       break;
                             case ACCELEROMETER:     startAccelerometerTest();   break;
                             case WIFI:              startWiFiTest();            break;
+                            case NFC:               startNFCTest();             break;
                             default:                                            break;
                         }
                     }
@@ -170,13 +173,14 @@ public class CheckUpActivity extends AppCompatActivity {
         addGyroscopeTest();
         addAccelerometerTest();
         addWifiTest();
+        addNFCTest();
     }
 
     private void addCameraTestItem() {
         if (checkCameraHardware()) {
             testItems.add(new TestItem(
                     "Camera", CAMERA,
-                    R.drawable.untested_camera,
+                    R.drawable.camera,
                     R.drawable.failed_camera,
                     R.drawable.passed_camera)
             );
@@ -226,9 +230,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if(checkFlashLightHardware()) {
             testItems.add(new TestItem(
                     "Zaklamp", FLASH,
-                    R.drawable.untested_charger,
-                    R.drawable.failed_charger,
-                    R.drawable.passed_charger)
+                    R.drawable.untested_flashlight,
+                    R.drawable.failed_flashlight,
+                    R.drawable.passed_flashlight)
             );
         }
     }
@@ -298,9 +302,9 @@ public class CheckUpActivity extends AppCompatActivity {
         if(!getResources().getBoolean(R.bool.isTab)) {
             testItems.add(new TestItem(
                     "Bel speaker", CALL_SPEAKER,
-                    R.drawable.untested_speaker,
-                    R.drawable.failed_speaker,
-                    R.drawable.passed_speaker)
+                    R.drawable.untested_callspeaker,
+                    R.drawable.failed_callspeaker,
+                    R.drawable.passed_callspeaker)
             );
         }
     }
@@ -363,8 +367,20 @@ public class CheckUpActivity extends AppCompatActivity {
         );
     }
 
+    private void addNFCTest() {
+        if (checkNFCHardware()) {
+            testItems.add(new TestItem(
+                    "NFC", NFC,
+                    R.drawable.untested_nfc,
+                    R.drawable.failed_nfc,
+                    R.drawable.passed_nfc)
+            );
+        }
+    }
+
     //TODO: Test NotificationLED
     //TODO: Test HeartRateSensor
+    //TODO: Test Bluetooth?
 
     // endregion
 
@@ -420,6 +436,15 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     /**
+     * Check if this device has NFC
+     *
+     * @return true if it has NFC false if it doesn't
+     */
+    private boolean checkNFCHardware() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
+    }
+
+    /**
      * Check if this device has Fingerprint
      */
     @TargetApi(Build.VERSION_CODES.M)
@@ -448,9 +473,9 @@ public class CheckUpActivity extends AppCompatActivity {
                 if (fingerprintManager.isHardwareDetected()) {
                     testItems.add(index, new TestItem(
                             "Vingerafdruk scanner", FINGERPRINT,
-                            R.drawable.untested_homebutton,
-                            R.drawable.failed_homebutton,
-                            R.drawable.passed_homebutton)
+                            R.drawable.untested_fingerprint,
+                            R.drawable.failed_fingerprint,
+                            R.drawable.passed_fingerprint)
                     );
                     testItemAdapter.notifyDataSetChanged();
                 }
@@ -554,6 +579,10 @@ public class CheckUpActivity extends AppCompatActivity {
         startActivityForResult(testIntent, WIFI);
     }
 
+    private void startNFCTest() {
+        //TODO: Implement or not? Most devices don't have NFC, and if they have most users don't use it
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -606,8 +635,9 @@ public class CheckUpActivity extends AppCompatActivity {
                 case MICROPHONE:        handleMicrophoneResult(requestCode, data);      break;
                 case MULTITOUCH:        handleMultitouchResult(requestCode, data);      break;
                 case GYROSCOPE:         handleGyroscopeResult(requestCode, data);       break;
-                case ACCELEROMETER:     handleAcceleroMeterResult(requestCode, data);   break;
+                case ACCELEROMETER:     handleAccelerometerResult(requestCode, data);   break;
                 case WIFI:              handleWiFiResult(requestCode, data);            break;
+                case NFC:               handleNFCResult(requestCode, data);             break;
                 default:                                                                break;
             }
 
@@ -834,7 +864,7 @@ public class CheckUpActivity extends AppCompatActivity {
     private void handleGyroscopeResult(int requestCode, Intent data) {
     }
 
-    private void handleAcceleroMeterResult(int requestCode, Intent data) {
+    private void handleAccelerometerResult(int requestCode, Intent data) {
     }
 
     private void handleWiFiResult(int requestCode, Intent data) {
@@ -849,6 +879,8 @@ public class CheckUpActivity extends AppCompatActivity {
         }
     }
 
+    private void handleNFCResult(int requestCode, Intent data) {
+    }
 
     private AlertDialog.Builder createResetAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
