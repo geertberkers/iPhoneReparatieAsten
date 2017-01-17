@@ -1,11 +1,19 @@
 package geert.berkers.iphonereparatieasten.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.hardware.fingerprint.FingerprintManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,13 +29,15 @@ import java.util.List;
 import geert.berkers.iphonereparatieasten.Information;
 import geert.berkers.iphonereparatieasten.R;
 import geert.berkers.iphonereparatieasten.activitytest.CameraTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.CompassTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.FingerprintTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
-import geert.berkers.iphonereparatieasten.activitytest.ChargerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HomeButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.OnOffButtonTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.SpeakerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.VibratorTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.VolumeControlsTestActivity;
@@ -52,19 +62,23 @@ public class CheckUpActivity extends AppCompatActivity {
     private final static int CHARGER = 7;
     private final static int ON_OFF_BUTTON = 8;
     private final static int HOME_BUTTON = 9;
-    private final static int VOLUME_CONTROLS = 10;
-    private final static int SPEAKER = 11;
-    private final static int VIBRATOR = 12;
-    private final static int MICROPHONE = 13;
-    private final static int MULTITOUCH = 14;
-    private final static int GYROSCOPE = 15;
-    private final static int ACCELEROMETER = 16;
-    private final static int WIFI = 17;
+    private final static int FINGERPRINT = 10;
+    private final static int VOLUME_CONTROLS = 11;
+    private final static int SPEAKER = 12;
+    private final static int VIBRATOR = 13;
+    private final static int MICROPHONE = 14;
+    private final static int MULTITOUCH = 15;
+    private final static int GYROSCOPE = 16;
+    private final static int ACCELEROMETER = 17;
+    private final static int WIFI = 18;
+    private static final int FINGERPRINT_REQUEST_CODE = 999;
 
+    private int index;
     private Button btnReset;
     private List<TestItem> testItems;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter testItemAdapter;
+    private FingerprintManager fingerprintManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +124,7 @@ public class CheckUpActivity extends AppCompatActivity {
                             case CHARGER:           startChargerTest();         break;
                             case ON_OFF_BUTTON:     startOnOffButtonTest();     break;
                             case HOME_BUTTON:       startHomeButtonTest();      break;
+                            case FINGERPRINT:       startFingerPrintTest();     break;
                             case VOLUME_CONTROLS:   startVolumeControlsTest();  break;
                             case SPEAKER:           startSpeakerTest();         break;
                             case VIBRATOR:          startVibratorTest();        break;
@@ -138,6 +153,7 @@ public class CheckUpActivity extends AppCompatActivity {
         addChargerTest();
         addPowerButtonTest();
         addHomeButtonTest();
+        addFingerPrintTest();
         addVolumeButtonsTest();
         addSpeakerTest();
         addVibratorTest();
@@ -170,7 +186,7 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void addGPSTest() {
-        if(checkGPSHardware()) {
+        if (checkGPSHardware()) {
             testItems.add(new TestItem(
                     "GPS", GPS,
                     R.drawable.untested_gps,
@@ -233,6 +249,11 @@ public class CheckUpActivity extends AppCompatActivity {
                 R.drawable.failed_homebutton,
                 R.drawable.passed_homebutton)
         );
+    }
+
+    private void addFingerPrintTest() {
+        index = testItems.size();
+        checkFingerprintHardware();
     }
 
     private void addVolumeButtonsTest() {
@@ -313,8 +334,8 @@ public class CheckUpActivity extends AppCompatActivity {
         );
     }
 
-    //TODO: Test NotficationLED
-    //TODO: Test FingerprintScanner
+    //TODO: Test NotificationLED
+    //TODO: Test HeartRateSensor
 
     // endregion
 
@@ -360,6 +381,45 @@ public class CheckUpActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Check if this device has Fingerprint
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkFingerprintHardware() {
+        fingerprintManager = (FingerprintManager) getSystemService(Context.FINGERPRINT_SERVICE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.USE_FINGERPRINT}, FINGERPRINT_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+       if(requestCode == FINGERPRINT_REQUEST_CODE){
+           if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+               checkFingerScannerHardware();
+           }
+       }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkFingerScannerHardware() {
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.USE_FINGERPRINT}, FINGERPRINT_REQUEST_CODE);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (fingerprintManager.isHardwareDetected()) {
+                    testItems.add(index, new TestItem(
+                            "Vingerafdruk scanner", FINGERPRINT,
+                            R.drawable.untested_homebutton,
+                            R.drawable.failed_homebutton,
+                            R.drawable.passed_homebutton)
+                    );
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
     private void startCameraTest() {
         Intent cameraIntent = new Intent(CheckUpActivity.this, CameraTestActivity.class);
         startActivityForResult(cameraIntent, CAMERA);
@@ -403,6 +463,11 @@ public class CheckUpActivity extends AppCompatActivity {
     private void startHomeButtonTest() {
         Intent powerIntent = new Intent(CheckUpActivity.this, HomeButtonTestActivity.class);
         startActivityForResult(powerIntent, HOME_BUTTON);
+    }
+
+    private void startFingerPrintTest() {
+        Intent fingerprintIntent = new Intent(CheckUpActivity.this, FingerprintTestActivity.class);
+        startActivityForResult(fingerprintIntent, FINGERPRINT);
     }
 
     private void startVolumeControlsTest() {
@@ -482,6 +547,7 @@ public class CheckUpActivity extends AppCompatActivity {
                 case CHARGER:           handleChargerResult(requestCode, data);         break;
                 case ON_OFF_BUTTON:     handleOnOffButtonResult(requestCode, data);     break;
                 case HOME_BUTTON:       handleHomeButtonResult(requestCode, data);      break;
+                case FINGERPRINT:       handleFingerprintResult(requestCode, data);     break;
                 case VOLUME_CONTROLS:   handleVolumeControlsResult(requestCode, data);  break;
                 case SPEAKER:           handleSpeakerResult(requestCode, data);         break;
                 case VIBRATOR:          handleVibratorResult(requestCode, data);        break;
@@ -623,6 +689,18 @@ public class CheckUpActivity extends AppCompatActivity {
                 if (testItem.getRequestCode() == requestCode) {
                     boolean homeButtonIsWorking = data.getBooleanExtra("homeButtonIsWorking", false);
                     testItem.setTestResult(homeButtonIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    private void handleFingerprintResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean fingerprintIsWorking = data.getBooleanExtra("fingerprintIsWorking", false);
+                    testItem.setTestResult(fingerprintIsWorking ? TestResult.PASSED : TestResult.FAILED);
                     testItemAdapter.notifyDataSetChanged();
                 }
             }
