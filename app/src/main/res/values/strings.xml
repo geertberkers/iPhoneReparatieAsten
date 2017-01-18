@@ -138,5 +138,12 @@
     <string name="accu">Accu</string>
     <string name="info_test_accu">Informatie over de accu:</string>
     <string name="question_test_accu">Heeft u goede waardes ontvangen?</string>
+    <string name="health">Health</string>
+    <string name="voltage">Voltage</string>
+    <string name="temperature">Temperature</string>
+    <string name="technology">Technology</string>
+    <string name="charging">Charging</string>
+    <string name="plugged">Plugged</string>
+    <string name="percentage">Percentage</string>
 
 </resources>

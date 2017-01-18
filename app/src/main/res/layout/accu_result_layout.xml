@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_margin="@dimen/activity_horizontal_margin"
@@ -15,22 +16,23 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/network"
+            android:text="@string/health"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/txtNetwork"
+            android:id="@+id/txtHealth"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/network"/>
+            android:text="@string/health"/>
 
         <ImageView
-            android:id="@+id/resultNetwork"
+            android:id="@+id/resultHealth"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:contentDescription="@string/network"/>
+            android:contentDescription="@string/health"
+            app:srcCompat="@drawable/ic_check"/>
     </LinearLayout>
 
     <LinearLayout
@@ -43,22 +45,24 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/ip_address"
+            android:text="@string/percentage"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/txtIPAddress"
+            android:id="@+id/txtPercentage"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/ip_address"/>
+            android:text="@string/percentage"/>
 
         <ImageView
-            android:id="@+id/resultIPAddress"
+            android:id="@+id/resultPercentage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:contentDescription="@string/ip_address"/>
+            android:contentDescription="@string/percentage"
+            app:srcCompat="@drawable/ic_check"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -71,21 +75,139 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/bssid"
+            android:text="@string/plugged"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/txtBSSID"
+            android:id="@+id/txtPlugged"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/bssid"/>
+            android:text="@string/plugged"/>
 
         <ImageView
-            android:id="@+id/resultBSSID"
+            android:id="@+id/resultPlugged"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:contentDescription="@string/bssid"/>
+            android:contentDescription="@string/plugged"
+            app:srcCompat="@drawable/ic_check"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/charging"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtCharging"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/charging"/>
+
+        <ImageView
+            android:id="@+id/resultCharging"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:contentDescription="@string/charging"
+            app:srcCompat="@drawable/ic_check"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/technology"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtTechnology"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/technology"/>
+
+        <ImageView
+            android:id="@+id/resultTechnology"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:contentDescription="@string/technology"
+            app:srcCompat="@drawable/ic_check"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/temperature"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtTemp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/temperature"/>
+
+        <ImageView
+            android:id="@+id/resultTemp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:contentDescription="@string/temperature"
+            app:srcCompat="@drawable/ic_check"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/voltage"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtVoltage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:text="@string/voltage"/>
+
+        <ImageView
+            android:id="@+id/resultVoltage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:contentDescription="@string/voltage"
+            app:srcCompat="@drawable/ic_check"/>
+    </LinearLayout>
+
 </LinearLayout>
