@@ -64,7 +64,12 @@ public class WiFiTestActivity extends AppCompatActivity {
         frame.addView(imageView);
 
         imageView.setImageResource(R.drawable.wifi);
-
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isWorking();
+            }
+        });
         fabNotWorking = (FloatingActionButton) findViewById(R.id.fabNotWorking);
         fabNotWorking.setOnClickListener(new View.OnClickListener() {
             @Override

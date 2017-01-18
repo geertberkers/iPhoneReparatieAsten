@@ -28,7 +28,6 @@ public class ChargerTestActivity extends AppCompatActivity {
     private boolean chargerIsWorking;
 
     private ImageView imageView;
-    private PowerConnectionReceiver powerBroadcastReceiver;
 
     private FloatingActionButton fabWorking;
     private FloatingActionButton fabNotWorking;
@@ -41,7 +40,6 @@ public class ChargerTestActivity extends AppCompatActivity {
         initControls();
         setTitle(getString(R.string.charger));
 
-        startPowerBroadcastReceiver();
     }
 
     @Override
@@ -102,11 +100,7 @@ public class ChargerTestActivity extends AppCompatActivity {
         finish();
     }
 
-    private void startPowerBroadcastReceiver() {
-        powerBroadcastReceiver = new PowerConnectionReceiver();
-    }
-
-    public class PowerConnectionReceiver extends BroadcastReceiver {
+    private BroadcastReceiver powerBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
@@ -117,10 +111,10 @@ public class ChargerTestActivity extends AppCompatActivity {
                 handleNoPowerPluggedIn();
             }
         }
+    };
 
-        private boolean checkConnected(int plugged) {
-            return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
-        }
+    private boolean checkConnected(int plugged) {
+        return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB;
     }
 
     private void handlePowerPluggedIn() {

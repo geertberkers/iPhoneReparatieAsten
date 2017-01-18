@@ -75,6 +75,7 @@
     <TextView
         android:id="@+id/txtInfo"
         android:layout_width="match_parent"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="6dp"
@@ -90,6 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom"
         android:layout_gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_margin="6dp"
         android:background="@android:drawable/dialog_holo_light_frame"
         android:padding="16dp"

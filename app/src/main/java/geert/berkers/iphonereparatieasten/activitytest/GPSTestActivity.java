@@ -45,7 +45,7 @@ public class GPSTestActivity extends AppCompatActivity implements OnMapReadyCall
     private final static double LONGITUDE_START = 4.55;
 
     private final static int MIN_DISTANCE_BETWEEN_UPDATES = 10;
-    private final static int MIN_TIME_INTERVAL_BETWEEN_UPDATES = 1000;
+    private final static int MIN_TIME_INTERVAL_BETWEEN_UPDATES = 10000;
 
     private static TextView txtInfo;
     private static TextView txtQuestion;

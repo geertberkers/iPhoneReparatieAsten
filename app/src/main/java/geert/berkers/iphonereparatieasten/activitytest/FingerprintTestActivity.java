@@ -80,8 +80,8 @@ public class FingerprintTestActivity extends AppCompatActivity {
         txtQuestion.setText(R.string.info_question_test_fingerprint);
 
         ImageView imageView = new ImageView(this);
-        imageView.setPadding(100, 100, 100, 100);
-        imageView.setImageResource(R.drawable.fingerprint);
+        //imageView.setPadding(100, 100, 100, 100);
+        imageView.setImageResource(R.drawable.fingerprint_untested);
 
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();

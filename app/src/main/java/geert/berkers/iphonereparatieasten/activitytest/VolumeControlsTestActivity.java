@@ -34,8 +34,6 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
     private boolean volumeDownIsWorking;
     private boolean alertSliderIsWorking;
 
-    private RingerModeBroadcastReceiver ringerModeBroadcastReceiver;
-
     private ImageView imageView;
     private FloatingActionButton fabWorking;
     private FloatingActionButton fabNotWorking;
@@ -47,19 +45,18 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
 
         initControls();
         setTitle(getString(R.string.volume_controls));
-        startRingerBroadcastReceiver();
     }
 
     @Override
     public void onPause() {
-        unregisterReceiver(ringerModeBroadcastReceiver);
+        unregisterReceiver(ringerModeReceiver);
         super.onPause();
     }
 
     @Override
     public void onResume() {
         IntentFilter filter = new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION);
-        registerReceiver(ringerModeBroadcastReceiver, filter);
+        registerReceiver(ringerModeReceiver, filter);
         super.onResume();
     }
 
@@ -107,9 +104,7 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         volumeDownTested = false;
     }
 
-    private void startRingerBroadcastReceiver() {
-        ringerModeBroadcastReceiver = new RingerModeBroadcastReceiver();
-    }
+
     private void isNotWorking() {
         setResult();
     }
@@ -169,13 +164,13 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         }
     }
 
-    public static class RingerModeBroadcastReceiver extends BroadcastReceiver {
+    private BroadcastReceiver ringerModeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(AudioManager.RINGER_MODE_CHANGED_ACTION)) {
                 getRingerMode(context);
             }
         }
-    }
+    };
 }
 

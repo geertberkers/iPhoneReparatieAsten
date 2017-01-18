@@ -37,7 +37,8 @@ public class TestItemAdapter extends RecyclerView.Adapter<TestItemViewHolder> {
         switch(testItem.getTestResult()){
             case FAILED:        imageResource = testItem.getFailedImageResource();      break;
             case PASSED:        imageResource = testItem.getPassedImageResource();      break;
-            case NOT_TESTED:    imageResource = testItem.getUntestedImageResource();    break;
+            case NO_PERMISSION: imageResource = testItem.getFailedImageResource();      break;
+            case NOT_TESTED:
             default:            imageResource = testItem.getUntestedImageResource();    break;
         }
 

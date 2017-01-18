@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -22,11 +23,12 @@ import geert.berkers.iphonereparatieasten.R;
  * Created by Geert.
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class SpeakerTestActivity  extends AppCompatActivity {
+public class SpeakerTestActivity extends AppCompatActivity {
 
     private TextView txtInfo;
     private TextView txtQuestion;
 
+    private boolean speakerIsTested;
     private boolean speakerIsPlaying;
     private boolean speakerIsWorking;
 
@@ -53,8 +55,22 @@ public class SpeakerTestActivity  extends AppCompatActivity {
         txtQuestion.setText(R.string.question_test_speaker_play);
 
         imageView = new ImageView(this);
-        //TODO: Add speaker image
-
+        imageView.setPadding(20, 20, 20, 20);
+        imageView.setImageResource(R.drawable.speaker);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!speakerIsTested) {
+                    isWorking();
+                } else if (!speakerIsPlaying) {
+                    startPlayingSound();
+                    startAnimation();
+                } else {
+                    stopPlaying();
+                    imageView.setImageResource(R.drawable.speaker);
+                }
+            }
+        });
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
         frame.addView(imageView);
@@ -85,8 +101,10 @@ public class SpeakerTestActivity  extends AppCompatActivity {
     }
 
     private void isWorking() {
-        if (!speakerIsPlaying) {
+        if (!speakerIsTested) {
             startPlayingSound();
+            startAnimation();
+
             txtQuestion.setText(R.string.question_test_speaker);
             fabNotWorking.setVisibility(View.VISIBLE);
         } else {
@@ -97,15 +115,13 @@ public class SpeakerTestActivity  extends AppCompatActivity {
 
     private void startPlayingSound() {
         stopPlaying();
+        speakerIsTested = true;
         speakerIsPlaying = true;
-        //TODO: Add speaker image animation
 
         mediaPlayer = MediaPlayer.create(this, R.raw.nova);
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
-        AudioManager audioManager= (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_NORMAL);
-        audioManager.setSpeakerphoneOn(true);
         audioManager.setStreamVolume(
                 AudioManager.MODE_NORMAL,
                 audioManager.getStreamMaxVolume(AudioManager.MODE_NORMAL),
@@ -125,7 +141,13 @@ public class SpeakerTestActivity  extends AppCompatActivity {
         mediaPlayer.start();
     }
 
-    private void setResult(){
+    private void startAnimation() {
+        imageView.setImageResource(R.drawable.speaker_animation);
+        AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+        vibrationAnimation.start();
+    }
+
+    private void setResult() {
         stopPlaying();
         Intent intentMessage = new Intent();
         intentMessage.putExtra("speakerIsWorking", speakerIsWorking);
@@ -134,6 +156,8 @@ public class SpeakerTestActivity  extends AppCompatActivity {
     }
 
     private void stopPlaying() {
+        speakerIsPlaying = false;
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();

@@ -47,7 +47,7 @@
 
     <!-- Charger -->
     <string name="charger">Oplader</string>
-    <string name="info_test_charger">Plug een USB-kabel in. (Die van stroom voorzien is)</string>
+    <string name="info_test_charger">Plug een USB-kabel in.\n(Die van stroom voorzien is)</string>
     <string name="question_test_charger">"Is de kabel ingeplugd maar niet herkend?"</string>
     <string name="result_test_charger">"Een ingeplugde USB-kabel is herkend."</string>
 
@@ -82,7 +82,7 @@
 
     <!-- Fingerprint Scanner -->
     <string name="fingerprint_scanner">Vingerafdruk scanner</string>
-    <string name="info_test_fingerprint">Gebruik de vingerafdruk scanner</string>
+    <string name="info_test_fingerprint">Test de vingerafdruk scanner</string>
     <string name="info_question_test_fingerprint">Gebruik een niet toegevoegde vinger!</string>
     <string name="no_lockscreen">Geen schermbeveiliging ingesteld.</string>
     <string name="no_permission_fingerprint">Vingerafdruk scanner heeft geen permissie.</string>

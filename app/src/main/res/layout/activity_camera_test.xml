@@ -17,6 +17,7 @@
         android:layout_height="match_parent"/>
 
     <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:background="@android:color/white"
         android:id="@+id/txtInfo"
         android:layout_width="match_parent"
@@ -28,6 +29,7 @@
         tools:ignore="HardcodedText"/>
 
     <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:background="@android:color/white"
         android:id="@+id/txtQuestion"
         android:layout_width="match_parent"

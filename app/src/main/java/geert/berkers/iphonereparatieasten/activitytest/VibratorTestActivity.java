@@ -2,6 +2,7 @@ package geert.berkers.iphonereparatieasten.activitytest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,7 @@ public class VibratorTestActivity extends AppCompatActivity {
     private TextView txtQuestion;
 
     private boolean vibratorTested;
+    private boolean vibratorIsVibrating;
     private boolean vibratorIsWorking;
 
     private Vibrator vibrator;
@@ -58,8 +60,23 @@ public class VibratorTestActivity extends AppCompatActivity {
         txtQuestion.setText(R.string.question_test_vibrator_test);
 
         imageView = new ImageView(this);
-        //TODO: Set image, and animation on vibration
-
+        imageView.setPadding(20,20,20,20);
+        imageView.setImageResource(R.drawable.vibrate);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!vibratorTested) {
+                    isWorking();
+                } else if(!vibratorIsVibrating) {
+                    startVibratorTest();
+                    startAnimation();
+                } else {
+                    vibratorIsVibrating = false;
+                    vibrator.cancel();
+                    imageView.setImageResource(R.drawable.vibrate);
+                }
+            }
+        });
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
         frame.addView(imageView);
@@ -91,6 +108,7 @@ public class VibratorTestActivity extends AppCompatActivity {
     private void isWorking() {
         if (!vibratorTested) {
             startVibratorTest();
+            startAnimation();
         } else {
             vibratorIsWorking = true;
             setResult();
@@ -99,6 +117,8 @@ public class VibratorTestActivity extends AppCompatActivity {
 
     private void startVibratorTest() {
         vibratorTested = true;
+        vibratorIsVibrating = true;
+
         fabNotWorking.setVisibility(View.VISIBLE);
 
         txtInfo.setText(R.string.info_test_vibrating);
@@ -106,8 +126,14 @@ public class VibratorTestActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        long[] pattern = {400, 200};
+        long[] pattern = {0, 800, 800};
         vibrator.vibrate(pattern, 0);
+    }
+
+    private void startAnimation() {
+        imageView.setImageResource(R.drawable.vibration_animation);
+        AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+        vibrationAnimation.start();
     }
 
     private void setResult(){

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
     private TextView txtInfo;
     private TextView txtQuestion;
 
+    private boolean callSpeakerIsTested;
     private boolean callSpeakerIsPlaying;
     private boolean callSpeakerIsWorking;
 
@@ -53,8 +55,22 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
         txtQuestion.setText(R.string.play_test_callspeaker);
 
         imageView = new ImageView(this);
-        //TODO: Add speaker image
-
+        imageView.setPadding(20,20,20,20);
+        imageView.setImageResource(R.drawable.callspeaker);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!callSpeakerIsTested) {
+                    isWorking();
+                } else if (!callSpeakerIsPlaying) {
+                    startPlayingSound();
+                    startAnimation();
+                } else {
+                    stopPlaying();
+                    imageView.setImageResource(R.drawable.callspeaker);
+                }
+            }
+        });
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
         frame.addView(imageView);
@@ -85,8 +101,11 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
     }
 
     private void isWorking() {
-        if (!callSpeakerIsPlaying) {
+        if (!callSpeakerIsTested) {
+            callSpeakerIsTested = true;
             startPlayingSound();
+            startAnimation();
+
             txtQuestion.setText(R.string.question_test_callspeaker);
             fabNotWorking.setVisibility(View.VISIBLE);
         } else {
@@ -98,14 +117,10 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
     private void startPlayingSound() {
         stopPlaying();
         callSpeakerIsPlaying = true;
-        //TODO: Add speaker image animation
-
         mediaPlayer = MediaPlayer.create(this, R.raw.nova);
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
 
         AudioManager audioManager= (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        audioManager.setSpeakerphoneOn(false);
         audioManager.setStreamVolume(
                 AudioManager.MODE_IN_COMMUNICATION,
                 audioManager.getStreamMaxVolume(AudioManager.MODE_IN_COMMUNICATION),
@@ -125,6 +140,12 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
+    private void startAnimation() {
+        imageView.setImageResource(R.drawable.call_speaker_animation);
+        AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+        vibrationAnimation.start();
+    }
+
     private void setResult(){
         stopPlaying();
         Intent intentMessage = new Intent();
@@ -134,11 +155,16 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
     }
 
     private void stopPlaying() {
+        callSpeakerIsPlaying = false;
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+
+        AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_NORMAL);
     }
 }
 

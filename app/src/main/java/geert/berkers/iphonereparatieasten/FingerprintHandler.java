@@ -24,7 +24,9 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
     @Override
     public void onAuthenticationError(int errMsgId, CharSequence error) {
-        Toast.makeText(appContext, error, Toast.LENGTH_LONG).show();
+        if(!error.equals("Fingerprint operation canceled.")){
+            Toast.makeText(appContext, error, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

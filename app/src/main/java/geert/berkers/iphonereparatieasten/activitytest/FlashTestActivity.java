@@ -31,6 +31,7 @@ public class FlashTestActivity extends AppCompatActivity {
     private TextView txtQuestion;
 
     private boolean flashIsOn;
+    private boolean flashTested;
     private boolean flashIsWorking;
 
     private Camera camera;
@@ -48,6 +49,12 @@ public class FlashTestActivity extends AppCompatActivity {
         setTitle(getString(R.string.flashlight));
     }
 
+    @Override
+    protected void onPause() {
+        stopFlashLight();
+        super.onPause();
+    }
+
     private void initControls() {
         txtInfo = (TextView) findViewById(R.id.txtInfo);
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
@@ -56,7 +63,21 @@ public class FlashTestActivity extends AppCompatActivity {
         txtQuestion.setText(R.string.info_question_flashlight);
 
         imageView = new ImageView(this);
-        //TODO: Add flash image
+        imageView.setImageResource(R.drawable.flash_off);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!flashIsOn) {
+                    if (isAndroidMOrAbove()) {
+                        askCameraPermission();
+                    } else {
+                        startFlashLight();
+                    }
+                } else {
+                    stopFlashLight();
+                }
+            }
+        });
 
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
@@ -88,7 +109,7 @@ public class FlashTestActivity extends AppCompatActivity {
     }
 
     private void isWorking() {
-        if (!flashIsOn) {
+        if (!flashTested && !flashIsOn) {
             if (isAndroidMOrAbove()) {
                 askCameraPermission();
             } else {
@@ -155,6 +176,7 @@ public class FlashTestActivity extends AppCompatActivity {
     }
 
     private void startFlashLight() {
+
         camera = Camera.open();
         Camera.Parameters parameters = camera.getParameters();
         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
@@ -163,12 +185,17 @@ public class FlashTestActivity extends AppCompatActivity {
         camera.stopPreview();
 
         flashIsOn = true;
+        flashTested = true;
+        imageView.setImageResource(R.drawable.flash_on);
+
         txtQuestion.setText(R.string.question_test_flashlight);
         fabNotWorking.setVisibility(View.VISIBLE);
     }
 
     private void stopFlashLight() {
         camera.release();
+        flashIsOn = false;
+        imageView.setImageResource(R.drawable.flash_off);
     }
 
 

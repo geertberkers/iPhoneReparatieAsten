@@ -19,6 +19,7 @@ import geert.berkers.iphonereparatieasten.R;
 /**
  * Created by Geert.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class HeadsetTestActivity extends AppCompatActivity {
 
     private TextView txtInfo;
@@ -28,10 +29,8 @@ public class HeadsetTestActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private MediaPlayer mediaPlayer;
-    private HeadsetBroadcastReceiver headsetBroadcastReceiver;
 
     private FloatingActionButton fabWorking;
-    @SuppressWarnings("FieldCanBeLocal")
     private FloatingActionButton fabNotWorking;
 
     @Override
@@ -42,7 +41,6 @@ public class HeadsetTestActivity extends AppCompatActivity {
         initControls();
         setTitle("Headset");
 
-        startHeadsetBroadcastReceiver();
     }
 
     @Override
@@ -63,6 +61,10 @@ public class HeadsetTestActivity extends AppCompatActivity {
         txtQuestion = (TextView) findViewById(R.id.txtQuestion);
 
         imageView = new ImageView(this);
+        txtInfo.setText(R.string.info_test_headset);
+        txtQuestion.setText(R.string.question_test_headset);
+        imageView.setImageResource(R.drawable.headset_unplugged);
+
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
         frame.addView(imageView);
@@ -102,10 +104,6 @@ public class HeadsetTestActivity extends AppCompatActivity {
         finish();
     }
 
-    private void startHeadsetBroadcastReceiver() {
-        headsetBroadcastReceiver = new HeadsetBroadcastReceiver();
-    }
-
     private void stopPlaying() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -114,7 +112,7 @@ public class HeadsetTestActivity extends AppCompatActivity {
         }
     }
 
-    public class HeadsetBroadcastReceiver extends BroadcastReceiver {
+    private BroadcastReceiver headsetBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
@@ -127,7 +125,7 @@ public class HeadsetTestActivity extends AppCompatActivity {
                 }
             }
         }
-    }
+    };
 
     @SuppressLint("SetTextI18n")
     private void handleNoHeadsetPluggedIn() {
