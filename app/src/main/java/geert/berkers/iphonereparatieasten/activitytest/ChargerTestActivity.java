@@ -100,7 +100,7 @@ public class ChargerTestActivity extends AppCompatActivity {
         finish();
     }
 
-    private BroadcastReceiver powerBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver powerBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);

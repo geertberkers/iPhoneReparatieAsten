@@ -141,7 +141,7 @@ public class CallSpeakerTestActivity extends AppCompatActivity {
     }
 
     private void startAnimation() {
-        imageView.setImageResource(R.drawable.call_speaker_animation);
+        imageView.setImageResource(R.drawable.animation_call_speaker);
         AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
         vibrationAnimation.start();
     }

@@ -131,7 +131,7 @@ public class VibratorTestActivity extends AppCompatActivity {
     }
 
     private void startAnimation() {
-        imageView.setImageResource(R.drawable.vibration_animation);
+        imageView.setImageResource(R.drawable.animation_vibration);
         AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
         vibrationAnimation.start();
     }

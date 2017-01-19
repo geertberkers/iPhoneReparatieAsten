@@ -2,6 +2,7 @@ package geert.berkers.iphonereparatieasten.activitytest;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -74,7 +75,9 @@ public class OnOffButtonTestActivity extends AppCompatActivity {
         txtQuestion.setText(R.string.question_test_powerbutton);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.power_button);
+        imageView.setImageResource(R.drawable.animation_power);
+        AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+        vibrationAnimation.start();
 
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();

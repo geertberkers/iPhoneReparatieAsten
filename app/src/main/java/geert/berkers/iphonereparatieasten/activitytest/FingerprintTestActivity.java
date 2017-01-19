@@ -138,7 +138,7 @@ public class FingerprintTestActivity extends AppCompatActivity {
         }
     }
 
-    protected void generateKey() {
+    private void generateKey() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             try {
@@ -168,7 +168,7 @@ public class FingerprintTestActivity extends AppCompatActivity {
         }
     }
 
-    public boolean cipherInit() {
+    private boolean cipherInit() {
         try {
             cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
                     + KeyProperties.BLOCK_MODE_CBC + "/"

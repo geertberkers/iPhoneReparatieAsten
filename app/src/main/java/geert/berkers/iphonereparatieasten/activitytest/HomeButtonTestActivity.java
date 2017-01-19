@@ -1,6 +1,7 @@
 package geert.berkers.iphonereparatieasten.activitytest;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +52,9 @@ public class HomeButtonTestActivity extends AppCompatActivity {
         txtQuestion.setText(R.string.question_test_homebutton);
 
         ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.home_button);
+        imageView.setImageResource(R.drawable.animation_home);
+        AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+        vibrationAnimation.start();
 
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();

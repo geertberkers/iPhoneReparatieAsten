@@ -142,7 +142,7 @@ public class SpeakerTestActivity extends AppCompatActivity {
     }
 
     private void startAnimation() {
-        imageView.setImageResource(R.drawable.speaker_animation);
+        imageView.setImageResource(R.drawable.animation_speaker);
         AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
         vibrationAnimation.start();
     }

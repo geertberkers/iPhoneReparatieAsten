@@ -112,7 +112,7 @@ public class HeadsetTestActivity extends AppCompatActivity {
         }
     }
 
-    private BroadcastReceiver headsetBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver headsetBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {

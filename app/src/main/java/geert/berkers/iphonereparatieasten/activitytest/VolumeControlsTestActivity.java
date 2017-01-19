@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -69,6 +70,10 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         //txtQuestion.setText(R.string.question_test_alertslider);
 
         imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.animation_volume_up);
+        AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+        vibrationAnimation.start();
+
         FrameLayout frame = (FrameLayout) findViewById(R.id.frameLayout);
         frame.removeAllViews();
         frame.addView(imageView);
@@ -96,7 +101,6 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         alertSliderTested = true;
         alertSliderIsWorking = true;
 
-        imageView.setImageResource(R.drawable.volume_up);
         txtInfo.setText(R.string.info_test_volume_up);
         txtQuestion.setText(R.string.question_test_volume);
 
@@ -131,8 +135,12 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
                     volumeUpTested = true;
                     volumeUpIsWorking = true;
 
-                    imageView.setImageResource(R.drawable.volume_down);
                     txtInfo.setText(R.string.info_test_volume_down);
+
+                    imageView.setImageResource(R.drawable.animation_volume_down);
+                    AnimationDrawable vibrationAnimation = (AnimationDrawable) imageView.getDrawable();
+                    vibrationAnimation.start();
+
                 }
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
@@ -164,7 +172,7 @@ public class VolumeControlsTestActivity extends AppCompatActivity {
         }
     }
 
-    private BroadcastReceiver ringerModeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver ringerModeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(AudioManager.RINGER_MODE_CHANGED_ACTION)) {

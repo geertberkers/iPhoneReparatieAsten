@@ -141,7 +141,7 @@ public class AccuTestActivity extends AppCompatActivity {
         finish();
     }
 
-    private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateBatteryData(intent);
