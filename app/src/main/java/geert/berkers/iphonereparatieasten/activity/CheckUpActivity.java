@@ -268,9 +268,9 @@ public class CheckUpActivity extends AppCompatActivity {
     private void addAccuTest() {
         testItems.add(new TestItem(
                 "Accu", ACCU,
-                R.drawable.accu_untested,
-                R.drawable.accu_failed,
-                R.drawable.accu_passed)
+                R.drawable.battery_untested,
+                R.drawable.battery_failed,
+                R.drawable.battery_passed)
         );
     }
 
