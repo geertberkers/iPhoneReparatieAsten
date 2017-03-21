@@ -114,7 +114,6 @@ public class CompassTestActivity extends AppCompatActivity implements SensorEven
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO: Fix deprecation
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME);
     }
 
@@ -126,7 +125,11 @@ public class CompassTestActivity extends AppCompatActivity implements SensorEven
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float degree = Math.round(event.values[0]);
+        float degree = Math.round(event.values[0]+ 0.5f);
+
+        if(degree <= 1 || degree >= 360){
+            System.out.println(degree);
+        }
 
         // Create a rotation animation (reverse turn degree degrees)
         RotateAnimation ra = new RotateAnimation(
@@ -153,7 +156,7 @@ public class CompassTestActivity extends AppCompatActivity implements SensorEven
             compassDrawView.invalidate();
         }
 
-        if(trackList.size() > 360){
+        if(trackList.size() == 360){
             txtQuestion.setText(R.string.result_test_compass);
             fabWorking.setVisibility(View.VISIBLE);
             fabNotWorking.setVisibility(View.GONE);

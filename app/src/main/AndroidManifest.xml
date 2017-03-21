@@ -65,6 +65,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ModelsActivity"/>
         </activity>
+
         <activity
             android:name=".activity.CheckUpActivity"
             android:launchMode="singleTop"
@@ -227,6 +228,16 @@
 
         <activity
             android:name=".activitytest.CallSpeakerTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CheckUpActivity"/>
+        </activity>
+
+        <activity
+            android:name=".activitytest.MultiTouchTestActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">

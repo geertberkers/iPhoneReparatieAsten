@@ -39,6 +39,7 @@ import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HomeButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.MultiTouchTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.OnOffButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.SpeakerTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.TouchscreenTestActivity;
@@ -459,7 +460,8 @@ public class CheckUpActivity extends AppCompatActivity {
      * @return true if it has NFC false if it doesn't
      */
     private boolean checkNFCHardware() {
-        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
+        return false;
+//        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
     }
 
     /**
@@ -586,7 +588,8 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void startMultiTouchTest() {
-
+        Intent multiTouchTest = new Intent(CheckUpActivity.this, MultiTouchTestActivity.class);
+        startActivityForResult(multiTouchTest, MULTITOUCH);
     }
 
     private void startGyroscopeTest() {
@@ -895,6 +898,15 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void handleMultitouchResult(int requestCode, Intent data) {
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean multiTouchIsWorking = data.getBooleanExtra("multiTouchIsWorking", false);
+                    testItem.setTestResult(multiTouchIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     private void handleGyroscopeResult(int requestCode, Intent data) {

@@ -39,17 +39,23 @@
     <string name="current_location">Huidige locatie</string>
     <string name="location_failed">Locatie ophalen mislukt</string>
 
-    <!-- Touchscreen-->
+    <!-- Touchscreen -->
     <string name="touchscreen">Touchscreen</string>
     <string name="info_test_touschreen">Raak alle blokken aan!</string>
     <string name="question_test_touchscreen">Het lukt niet om alle bokken aan te raken</string>
     <string name="result_test_touchscreen">Alle blokken aangeraakt!</string>
 
+    <!-- Multitouch -->
+    <string name="multitouch_3_fingers">Druk met 3 vingers op het scherm.</string>
+    <string name="multitouch_4_fingers">Herhaal dit nu met 4 vingers.</string>
+    <string name="multitouch_not_working">MultiTouch werkt niet!</string>
+    <string name="result_multitouch">MultiTouch geslaagd!</string>
+
     <!-- Charger -->
     <string name="charger">Oplader</string>
     <string name="info_test_charger">Plug een USB-kabel in.\n(Die van stroom voorzien is)</string>
-    <string name="question_test_charger">"Is de kabel ingeplugd maar niet herkend?"</string>
-    <string name="result_test_charger">"Een ingeplugde USB-kabel is herkend."</string>
+    <string name="question_test_charger">Is de kabel ingeplugd maar niet herkend?</string>
+    <string name="result_test_charger">Een ingeplugde USB-kabel is herkend.</string>
 
     <!-- Accu -->
 
@@ -145,5 +151,7 @@
     <string name="charging">Charging</string>
     <string name="plugged">Plugged</string>
     <string name="percentage">Percentage</string>
+    <string name="volume_both_recognized">Beide volume knoppen zijn gedetecteerd!</string>
+
 
 </resources>
