@@ -99,11 +99,12 @@
 
     <!-- Volume Buttons -->
     <string name="volume_controls">Volume knoppen</string>
-    <string name="info_test_volume">Verander de positie van de alert slider</string>
+    <!--<string name="info_test_volume">Verander de positie van de alert slider</string> -->
     <string name="info_test_volume_up">Druk op de volume omhoog knop</string>
     <string name="info_test_volume_down">Druk op de volume omlaag knop</string>
     <string name="question_test_volume">Het drukken op de volume knop is niet gedetecteerd</string>
-    <string name="question_test_alertslider">Verandering van de alert slider is niet gedetecteerd</string>
+    <!--<string name="question_test_alertslider">Verandering van de alert slider is niet gedetecteerd</string> -->
+    <string name="volume_both_recognized">Beide volume knoppen zijn gedetecteerd!</string>
 
     <!-- Speaker -->
     <string name="speaker">Speaker</string>
@@ -151,7 +152,6 @@
     <string name="charging">Charging</string>
     <string name="plugged">Plugged</string>
     <string name="percentage">Percentage</string>
-    <string name="volume_both_recognized">Beide volume knoppen zijn gedetecteerd!</string>
 
 
 </resources>

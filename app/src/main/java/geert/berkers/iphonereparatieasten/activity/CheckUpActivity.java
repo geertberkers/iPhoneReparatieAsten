@@ -39,6 +39,7 @@ import geert.berkers.iphonereparatieasten.activitytest.GPSTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HeadsetTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.HomeButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.LCDTestActivity;
+import geert.berkers.iphonereparatieasten.activitytest.MicrophoneTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.MultiTouchTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.OnOffButtonTestActivity;
 import geert.berkers.iphonereparatieasten.activitytest.SpeakerTestActivity;
@@ -443,7 +444,6 @@ public class CheckUpActivity extends AppCompatActivity {
      */
     @SuppressWarnings("deprecation")
     private boolean checkCompassHardware() {
-        //TODO: Replace with newer version
         SensorManager mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         for (int i = 0; i < deviceSensors.size(); i++) {
@@ -584,7 +584,8 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void startMicrophoneTest() {
-
+        Intent microphoneTest = new Intent(CheckUpActivity.this, MicrophoneTestActivity.class);
+        startActivityForResult(microphoneTest, MICROPHONE);
     }
 
     private void startMultiTouchTest() {
@@ -895,7 +896,15 @@ public class CheckUpActivity extends AppCompatActivity {
     }
 
     private void handleMicrophoneResult(int requestCode, Intent data) {
-    }
+        if (data != null) {
+            for (TestItem testItem : testItems) {
+                if (testItem.getRequestCode() == requestCode) {
+                    boolean microphoneIsWorking = data.getBooleanExtra("microphoneIsWorking", false);
+                    testItem.setTestResult(microphoneIsWorking ? TestResult.PASSED : TestResult.FAILED);
+                    testItemAdapter.notifyDataSetChanged();
+                }
+            }
+        }}
 
     private void handleMultitouchResult(int requestCode, Intent data) {
         if (data != null) {

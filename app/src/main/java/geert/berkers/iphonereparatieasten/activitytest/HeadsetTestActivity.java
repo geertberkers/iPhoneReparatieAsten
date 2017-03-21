@@ -22,6 +22,7 @@ import geert.berkers.iphonereparatieasten.R;
 @SuppressWarnings("FieldCanBeLocal")
 public class HeadsetTestActivity extends AppCompatActivity {
 
+    //TODO: Use other images.
     private TextView txtInfo;
     private TextView txtQuestion;
 

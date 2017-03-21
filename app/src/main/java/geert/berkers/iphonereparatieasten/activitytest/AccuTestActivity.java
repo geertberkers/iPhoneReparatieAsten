@@ -97,9 +97,6 @@ public class AccuTestActivity extends AppCompatActivity {
                 isWorking();
             }
         });
-
-        //TODO: Get battery information and update view
-        //updateView();
     }
 
     private void createInformationView() {
